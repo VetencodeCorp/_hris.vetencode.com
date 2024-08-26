@@ -1,114 +1,110 @@
 $("#user_id").select2();
+$("#access_id").select2();
 
+let dtb;
 $(document).ready(function () {
+    const maxRangeDays = 30;
+    $(".tooltipped").tooltip();
+
+    // Initialize from_date datepicker
     $("#from_date").datepicker({
         format: "yyyy-mm-dd",
         maxDate: new Date(),
         yearRange: 2,
         autoClose: true,
+        onOpen: function () {
+            const toDate = new Date($("#to_date").val());
+            if (toDate) {
+                const minDate = new Date(
+                    toDate.getTime() - maxRangeDays * 24 * 60 * 60 * 1000
+                );
+                this.options.minDate = minDate;
+                this.options.maxDate = toDate;
+            }
+        },
     });
 
+    // Initialize to_date datepicker
     $("#to_date").datepicker({
         format: "yyyy-mm-dd",
         maxDate: new Date(),
         yearRange: 2,
         autoClose: true,
         onOpen: function () {
-            var d = new Date($("#from_date").val());
-            var start_date = d.setDate(d.getDate() - 1);
-            this.options.minDate = new Date(start_date);
+            const fromDate = new Date($("#from_date").val());
+            if (fromDate) {
+                const maxDate = new Date(
+                    fromDate.getTime() + maxRangeDays * 24 * 60 * 60 * 1000
+                );
+                this.options.minDate = fromDate;
+                this.options.maxDate = maxDate;
+            }
         },
     });
 
-    var url = $("#wrap-search").data("url");
-    var from_date = $("#from_date").val();
-    var to_date = $("#to_date").val();
-    var user_id = $("#user_id").val();
-
-    $.ajax({
-        url: url,
-        type: "POST",
-        data: { from_date: from_date, to_date: to_date, user_id: user_id },
-        success: function (response) {
-            $("#showTable").html(response);
+    dtb = $("#data-table-absen").DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: $("#data-table-absen").data("url"),
+            type: "POST",
+            data: function (d) {
+                d.from_date = $("#from_date").val();
+                d.to_date = $("#to_date").val();
+                d.user_id = $("#user_id").val();
+                d.access_id = $("#access_id").val();
+            },
         },
-    });
-});
-
-$(document).on("change", "#from_date", function () {
-    var url = $("#wrap-search").data("url");
-    var from_date = $("#from_date").val();
-    var to_date = $("#to_date").val();
-    var user_id = $("#user_id").val();
-
-    $.ajax({
-        url: url,
-        type: "POST",
-        data: { from_date: from_date, to_date: to_date, user_id: user_id },
-        success: function (response) {
-            $("#showTable").html(response);
-        },
+        order: [[0, "desc"]], // Default ordering
+        pageLength: 10,
     });
 });
 
-$(document).on("change", "#to_date", function () {
-    var url = $("#wrap-search").data("url");
-    var from_date = $("#from_date").val();
-    var to_date = $("#to_date").val();
-    var user_id = $("#user_id").val();
+// Change event listener
+$(document).on(
+    "change",
+    "#from_date, #to_date, #user_id, #access_id",
+    function () {
+        dtb.ajax.reload();
+    }
+);
 
-    $.ajax({
-        url: url,
-        type: "POST",
-        data: { from_date: from_date, to_date: to_date, user_id: user_id },
-        success: function (response) {
-            $("#showTable").html(response);
-        },
-    });
-});
+$(document).on("click", ".reset-button", function () {
+    // Temporarily unbind the change event to avoid multiple triggers
+    $(document).off("change", "#from_date, #to_date, #user_id, #access_id");
 
-$(document).on("change", "#user_id", function () {
-    var url = $("#wrap-search").data("url");
-    var from_date = $("#from_date").val();
-    var to_date = $("#to_date").val();
-    var user_id = $("#user_id").val();
+    $("#from_date").val("").datepicker("setDate", null);
+    $("#to_date").val("").datepicker("setDate", null);
+    $("#user_id").val("").trigger("change");
+    $("#access_id").val("").trigger("change");
 
-    $.ajax({
-        url: url,
-        type: "POST",
-        data: { from_date: from_date, to_date: to_date, user_id: user_id },
-        success: function (response) {
-            $("#showTable").html(response);
-        },
-    });
+    $("#user_id").select2("val", "");
+    $("#access_id").select2("val", "");
+
+    // Rebind the change event and reload the datatable
+    $(document).on(
+        "change",
+        "#from_date, #to_date, #user_id, #access_id",
+        function () {
+            dtb.ajax.reload();
+        }
+    );
+
+    // Manually trigger the reload once after resetting
+    dtb.ajax.reload();
 });
 
 $(document).on("change", ".select-flag", function () {
     const id = $(this).data("id");
     const flag = $(this).val();
     const url = $(this).data("url");
-    const table = $("#wrap-search").data("url");
-    const from_date = $("#from_date").val();
-    const to_date = $("#to_date").val();
-    const user_id = $("#user_id").val();
 
     $.ajax({
         url: url,
         type: "POST",
         data: { id, flag },
         success: function (response) {
-            $.ajax({
-                url: table,
-                type: "POST",
-                data: {
-                    from_date: from_date,
-                    to_date: to_date,
-                    user_id: user_id,
-                },
-                success: function (response) {
-                    $("#showTable").html(response);
-                },
-            });
+            dtb.ajax.reload();
         },
     });
 });
