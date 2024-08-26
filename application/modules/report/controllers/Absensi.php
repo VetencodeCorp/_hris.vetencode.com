@@ -96,19 +96,33 @@ class Absensi extends CI_Controller
 
 	public function download_pdf()
 	{
-		$from_date = $this->input->get('from_date');
-		$to_date = $this->input->get('to_date');
+		$from_date = empty($this->input->get('from_date'))
+			? date('Y-m-01')
+			: $this->input->get('from_date');
+		$to_date = empty($this->input->get('to_date'))
+			? date('Y-m-d')
+			: $this->input->get('to_date');
 		$user_id = $this->input->get('user_id');
+		$access_id = $this->input->get('access_id');
 
-		if (!$from_date) {
-			$from_date = date('Y-m-1');
-		}
-		if (!$to_date) {
-			$to_date = date('Y-m-d');
-		}
-		$user = ($user_id) ? $this->absen->getUserById($user_id) : null;
+		$conditions = [
+			'absen.user_id' => $user_id,
+			'user.access_id' => $access_id,
+		];
+
+		$position = !empty($access_id)
+			? $this->absen->getAccessById($access_id)
+			: null;
+
+		$user = !empty($user_id)
+			? $this->absen->getUserById($user_id)
+			: null;
 
 		$filename = 'Report Absensi';
+		if ($position && !$user) {
+			$postionName = ucfirst($position->name);
+			$filename .= " {$postionName}";
+		}
 		if ($user) {
 			$filename .= " {$user->fullname}";
 		}
@@ -116,11 +130,11 @@ class Absensi extends CI_Controller
 		$filename .= " tanggal $dateRange";
 		$data['title'] = $filename;
 
-		$data['listData'] = $this->absen->getFilteredData($from_date, $to_date, $user_id, getUser()->access_id, getUser()->id, 100);
+		$data['listData'] = $this->absen->getFilteredData($from_date, $to_date, $conditions, getUser(), 500);
 		$mpdf = new \Mpdf\Mpdf([
 			'mode' => 'utf-8',
 			'format' => 'A4',
-			'orientation' => 'P',
+			'orientation' => 'L',
 			'margin_left' => 10,
 			'margin_right' => 10,
 			'margin_top' => 10,
@@ -129,10 +143,7 @@ class Absensi extends CI_Controller
 			'margin_footer' => 5,
 		]);
 
-		// Your HTML content
 		$html = $this->load->view('report/absensi/pdf', $data, true);
-
-		// Write HTML content to the PDF
 		$mpdf->WriteHTML($html);
 
 		// Output the PDF to the browser (no physical file created on the server)

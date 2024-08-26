@@ -162,4 +162,11 @@ class Mabsensi extends CI_Model
 			'id' => $id,
 		])->row();
 	}
+
+	public function getAccessById($id)
+	{
+		return $this->db->get_where('access', [
+			'id' => $id,
+		])->row();
+	}
 }

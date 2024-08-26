@@ -64,6 +64,15 @@
 							<label for="end_date">Sampai</label>
 						</div>
 						<?php if (is_access() < 3) : ?>
+							<div class="input-field col s12 m12 l2 pad5">
+								<select id="access_id" name="access_id">
+									<option value="" selected="selected">Semua Jabatan</option>
+									<?php foreach ($accesses as $access): ?>
+										<option value="<?= $access->id; ?>"><?= $access->name; ?></option>
+									<?php endforeach; ?>
+								</select>
+								<label for="access_id" class="active">Jabatan</label>
+							</div>
 							<div class="input-field col s12 m12 l3 pad5">
 								<select id="user_id" name="user_id">
 									<option value="" selected="selected">Semua Pegawai</option>
@@ -78,15 +87,6 @@
 									?>
 								</select>
 								<label for="user_id" class="active">Nama</label>
-							</div>
-							<div class="input-field col s12 m12 l2 pad5">
-								<select id="access_id" name="access_id">
-									<option value="" selected="selected">Semua Jabatan</option>
-									<?php foreach ($accesses as $access): ?>
-										<option value="<?= $access->id; ?>"><?= $access->name; ?></option>
-									<?php endforeach; ?>
-								</select>
-								<label for="access_id" class="active">Jabatan</label>
 							</div>
 						<?php endif; ?>
 						<div class="input-field col s12 m12 l3 pad5" style="display: flex">
