@@ -1,5 +1,5 @@
-$("#user_id").select2();
-$("#access_id").select2();
+const usersSelect = $("#user_id").select2();
+const accessesSelect = $("#access_id").select2();
 
 let dtb;
 $(document).ready(function () {
@@ -60,13 +60,47 @@ $(document).ready(function () {
     });
 });
 
+const handleFilterChange = function () {
+    if (this.id === "access_id") {
+        const url = $(this).data("url");
+        const access_id = $(this).val();
+        const access_name = !access_id
+            ? "Pegawai"
+            : $(`#access_id option[value="${access_id}"]`).text();
+
+        if (url) {
+            $.ajax({
+                url: `${url}/${access_id}`,
+                type: "GET",
+                success: function (users) {
+                    $("#user_id").select2("destroy");
+                    $("#user_id").empty();
+                    $("#user_id").append(
+                        `<option value="" selected="selected">Semua ${access_name}</option>`
+                    );
+                    users.forEach((user) => {
+                        $("#user_id").append(
+                            `<option value="${user.id}">${user.name}</option>`
+                        );
+                    });
+                    $("#user_id").select2();
+                },
+                error: function (xhr, status, error) {
+                    console.error("AJAX Error:", status, error);
+                },
+            });
+        } else {
+            console.warn("No URL defined in data-url attribute");
+        }
+    }
+    dtb.ajax.reload();
+};
+
 // Change event listener
 $(document).on(
     "change",
     "#from_date, #to_date, #user_id, #access_id",
-    function () {
-        dtb.ajax.reload();
-    }
+    handleFilterChange
 );
 
 $(document).on("click", ".reset-button", function () {
@@ -85,9 +119,7 @@ $(document).on("click", ".reset-button", function () {
     $(document).on(
         "change",
         "#from_date, #to_date, #user_id, #access_id",
-        function () {
-            dtb.ajax.reload();
-        }
+        handleFilterChange
     );
 
     // Manually trigger the reload once after resetting

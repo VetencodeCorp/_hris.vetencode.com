@@ -163,6 +163,28 @@ class Mabsensi extends CI_Model
 		])->row();
 	}
 
+	public function getEmployeesByAccessId($access_id)
+	{
+		// Ensure the access_id is safe to use in the query
+		$access_id = $this->db->escape_str($access_id ?? '');
+
+		$this->db->select('id, fullname as name');
+		$this->db->from('user');
+		$this->db->where('access_id >', 1);
+		if (!empty($access_id)) {
+			$this->db->where('access_id', $access_id);
+		}
+		$this->db->where('active', 1);
+		$this->db->where('deleted_by', null);
+		$query = $this->db->get();
+
+		if ($query->num_rows() > 0) {
+			return $query->result_array();
+		} else {
+			return [];
+		}
+	}
+
 	public function getAccessById($id)
 	{
 		return $this->db->get_where('access', [

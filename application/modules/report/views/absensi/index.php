@@ -54,7 +54,7 @@
 		<div class="row">
 			<div class="col s12">
 				<div class="card-panel">
-					<form id="wrap-search" data-url="<?= base_url(); ?>report/absensi/search_data" class="row">
+					<form id="wrap-search" class="row">
 						<div class="input-field col s6 m6 l2">
 							<input type="text" id="from_date" name="from_date" />
 							<label for="start_date">Dari</label>
@@ -65,13 +65,13 @@
 						</div>
 						<?php if (is_access() < 3) : ?>
 							<div class="input-field col s12 m12 l2 pad5">
-								<select id="access_id" name="access_id">
-									<option value="" selected="selected">Semua Jabatan</option>
+								<select id="access_id" name="access_id" data-url="<?= base_url(); ?>report/absensi/employees">
+									<option value="" selected="selected">Semua Level</option>
 									<?php foreach ($accesses as $access): ?>
 										<option value="<?= $access->id; ?>"><?= $access->name; ?></option>
 									<?php endforeach; ?>
 								</select>
-								<label for="access_id" class="active">Jabatan</label>
+								<label for="access_id" class="active">Level</label>
 							</div>
 							<div class="input-field col s12 m12 l3 pad5">
 								<select id="user_id" name="user_id">

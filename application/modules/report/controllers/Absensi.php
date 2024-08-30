@@ -18,22 +18,21 @@ class Absensi extends CI_Controller
 	{
 		$this->data['selectUser'] = $this->absen->getSelectUser();
 		$this->data['accesses'] = $this->absen->getSelectAccesses();
-		// var_dump($this->data['accesses']);
-		// die;
 
 		$this->load->view('report/absensi/index', $this->data);
 	}
 
-	public function search_data()
-	{
-		$from_date = $this->input->post('from_date');
-		$to_date = $this->input->post('to_date');
-		$user_id = $this->input->post('user_id');
+	// Update terbaru ini tidak digunakan
+	// public function search_data()
+	// {
+	// 	$from_date = $this->input->post('from_date');
+	// 	$to_date = $this->input->post('to_date');
+	// 	$user_id = $this->input->post('user_id');
 
-		$data['number'] = 1;
-		$data['listData'] = $this->absen->getSearchData($from_date, $to_date, $user_id, getUser()->access_id, getUser()->id);
-		echo $this->load->view('report/absensi/table_absen', $data);
-	}
+	// 	$data['number'] = 1;
+	// 	$data['listData'] = $this->absen->getSearchData($from_date, $to_date, $user_id, getUser()->access_id, getUser()->id);
+	// 	echo $this->load->view('report/absensi/table_absen', $data);
+	// }
 
 	public function datatable()
 	{
@@ -78,6 +77,13 @@ class Absensi extends CI_Controller
 			"data" => $data,
 		];
 		echo json_encode($output);
+	}
+
+	public function employees($access_id = null)
+	{
+		$employees = $this->absen->getEmployeesByAccessId($access_id);
+		$this->output->set_content_type('application/json')
+			->set_output(json_encode($employees));
 	}
 
 	public function change_flag()
