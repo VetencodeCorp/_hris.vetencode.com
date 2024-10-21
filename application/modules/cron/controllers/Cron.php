@@ -24,8 +24,8 @@ class Cron extends CI_Controller
 		$total_photos = count($attendances);
 		if ($total_photos) {
 			foreach ($attendances as $attendance) {
-				$fotoPath = FCPATH . $attendance->foto;
-				$fotoPulangPath = FCPATH . $attendance->foto_pulang;
+				$fotoPath = "./$attendance->foto";
+				$fotoPulangPath = "./$attendance->foto_pulang";
 
 				if (file_exists($fotoPath)) {
 					unlink($fotoPath);
@@ -73,22 +73,15 @@ class Cron extends CI_Controller
 		$total_photos = count($attendances);
 		if ($total_photos) {
 			foreach ($attendances as $attendance) {
-				if ($attendance->foto) {
-					$fotoPath = FCPATH . $attendance->foto;
-					if (is_file($fotoPath)) {
-						unlink($fotoPath);
-					} else {
-						echo "File not found or is not a file: " . $fotoPath;
-					}
+				$fotoPath = "./$attendance->foto";
+				$fotoPulangPath = "./$attendance->foto_pulang";
+
+				if (file_exists($fotoPath)) {
+					unlink($fotoPath);
 				}
 
-				if ($attendance->foto_pulang) {
-					$fotoPulangPath = FCPATH . $attendance->foto_pulang;
-					if (is_file($fotoPulangPath)) {
-						unlink($fotoPulangPath);
-					} else {
-						echo "File not found or is not a file: " . $fotoPulangPath;
-					}
+				if (file_exists($fotoPulangPath)) {
+					unlink($fotoPulangPath);
 				}
 			}
 		}
