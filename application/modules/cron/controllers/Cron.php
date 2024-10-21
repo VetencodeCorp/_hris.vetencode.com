@@ -24,8 +24,8 @@ class Cron extends CI_Controller
 		$total_photos = count($attendances);
 		if ($total_photos) {
 			foreach ($attendances as $attendance) {
-				$fotoPath = "./$attendance->foto";
-				$fotoPulangPath = "./$attendance->foto_pulang";
+				$fotoPath = FCPATH . $attendance->foto;
+				$fotoPulangPath = FCPATH . $attendance->foto_pulang;
 
 				if (file_exists($fotoPath)) {
 					unlink($fotoPath);
@@ -73,8 +73,8 @@ class Cron extends CI_Controller
 		$total_photos = count($attendances);
 		if ($total_photos) {
 			foreach ($attendances as $attendance) {
-				$fotoPath = "./$attendance->foto";
-				$fotoPulangPath = "./$attendance->foto_pulang";
+				$fotoPath = FCPATH . $attendance->foto;
+				$fotoPulangPath = FCPATH . $attendance->foto_pulang;
 
 				if (file_exists($fotoPath)) {
 					unlink($fotoPath);
