@@ -154,7 +154,7 @@
 						<?php
 							} else{
 						?>
-						<img style="margin-bottom: -55px;" class="materialboxed responsive-img" width="100%" src="<?= base_url();?>assets/images/no-foto.jpg">
+						<img style="margin-bottom: -53px;" class="materialboxed responsive-img" width="100%" src="<?= base_url();?>assets/images/no-foto.jpg">
 						<br>
 						<div class="row center mb-0">
 							<div class="input-field col s12">

@@ -37,11 +37,13 @@ class Mmingguan extends CI_Model{
 		$this->db->select('*');
 		$this->db->from('user');
 		$this->db->where('deleted_by', NULL); 
-		//$this->db->where('flag !=', NULL);
 		$this->db->where('active', 1);
 		$this->db->where('access_id >', 1);
 		if($toDay == 'Friday'){
 			$this->db->where('flag =', 'Friday');
+		}
+		if($toDay == 'Saturday'){
+			$this->db->where('flag =', 'Saturday');
 		}
 		if($toDay == 'Sunday'){
 			$this->db->where('flag =', 'Sunday');

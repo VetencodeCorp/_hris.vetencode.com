@@ -251,7 +251,7 @@ function enableMingguan()
 
 
 	$toDay = date('l', strtotime(date('Y-m-d')));
-	if ($toDay !== 'Friday' && $toDay !== 'Sunday') {
+	if ($toDay !== 'Friday' && $toDay !== 'Saturday' && $toDay !== 'Sunday') {
 		return 'disabled';
 	}
 }

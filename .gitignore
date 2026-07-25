@@ -1,5 +1,3 @@
-application/config/database.php
-
 .prettierrc
 /vendor
 *.bak
