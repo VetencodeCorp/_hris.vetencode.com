@@ -52,20 +52,20 @@
 									} else{
 								?>
 								<?php
-									if($absen->status == 0){
-								?>
-								<button data-id="<?= $absen->id;?>" data-href="<?= base_url();?>kehadiran" data-url="<?= base_url();?>kehadiran/alert_action" data-method="Rejected" class="btn btn-floating tooltipped red btn-alert" data-tooltip="Rejected"><i class="fa fa-times"></i></button>
-								<button class="btn btn-floating grey"><i class="fa fa-thumbs-up"></i></button>
+								if($absen->status == 0){
+							?>
+								<button type="button" class="btn btn-floating grey" disabled aria-label="Sudah ditolak"><i class="fa fa-times"></i></button>
+								<button type="button" data-id="<?= $absen->id;?>" data-href="<?= base_url();?>kehadiran" data-url="<?= base_url();?>kehadiran/alert_action" data-method="Approved" class="btn btn-floating tooltipped green btn-alert" data-tooltip="Setujui"><i class="fa fa-thumbs-up"></i></button>
 								<?php
 									} elseif($absen->status == 1){
 								?>
 								<button data-id="<?= $absen->id;?>" data-href="<?= base_url();?>kehadiran" data-url="<?= base_url();?>kehadiran/alert_action" data-method="Rejected" class="btn btn-floating tooltipped red btn-alert" data-tooltip="Rejected"><i class="fa fa-times"></i></button>
 								<button data-id="<?= $absen->id;?>" data-href="<?= base_url();?>kehadiran" data-url="<?= base_url();?>kehadiran/alert_action" data-method="Approved" class="btn btn-floating tooltipped green btn-alert" data-tooltip="Approved"><i class="fa fa-thumbs-up"></i></button>
 								<?php
-									} elseif($absen->status == 2){
-								?>
-								<button class="btn btn-floating grey"><i class="fa fa-times"></i></button>
-								<button class="btn btn-floating grey"><i class="fa fa-thumbs-up"></i></button>
+								} elseif($absen->status == 2){
+							?>
+								<button type="button" data-id="<?= $absen->id;?>" data-href="<?= base_url();?>kehadiran" data-url="<?= base_url();?>kehadiran/alert_action" data-method="Rejected" class="btn btn-floating tooltipped red btn-alert" data-tooltip="Tolak"><i class="fa fa-times"></i></button>
+								<button type="button" class="btn btn-floating grey" disabled aria-label="Sudah disetujui"><i class="fa fa-thumbs-up"></i></button>
 								<?php
 									}
 								?>
@@ -88,8 +88,8 @@
 								<?php
 									if($absen->status == 0){
 								?>
-								<button data-id="<?= $absen->id;?>" data-href="<?= base_url();?>kehadiran" data-url="<?= base_url();?>kehadiran/alert_action" data-method="Rejected" class="btn btn-floating tooltipped red btn-alert" data-tooltip="Rejected"><i class="fa fa-times"></i></button>
-								<button class="btn btn-floating grey"><i class="fa fa-thumbs-up"></i></button>
+								<button type="button" class="btn btn-floating grey" disabled aria-label="Sudah ditolak"><i class="fa fa-times"></i></button>
+								<button type="button" data-id="<?= $absen->id;?>" data-href="<?= base_url();?>kehadiran" data-url="<?= base_url();?>kehadiran/alert_action" data-method="Approved" class="btn btn-floating tooltipped green btn-alert" data-tooltip="Setujui"><i class="fa fa-thumbs-up"></i></button>
 								<?php
 									} elseif($absen->status == 1){
 								?>
@@ -98,8 +98,8 @@
 								<?php
 									} elseif($absen->status == 2){
 								?>
-								<button class="btn btn-floating grey"><i class="fa fa-times"></i></button>
-								<button class="btn btn-floating grey"><i class="fa fa-thumbs-up"></i></button>
+								<button type="button" data-id="<?= $absen->id;?>" data-href="<?= base_url();?>kehadiran" data-url="<?= base_url();?>kehadiran/alert_action" data-method="Rejected" class="btn btn-floating tooltipped red btn-alert" data-tooltip="Tolak"><i class="fa fa-times"></i></button>
+								<button type="button" class="btn btn-floating grey" disabled aria-label="Sudah disetujui"><i class="fa fa-thumbs-up"></i></button>
 								<?php
 									}
 								?>
@@ -123,20 +123,20 @@
 								} else{
 							?>
 							<?php
-								if($absen->status == 0){
-							?>
-							<button data-id="<?= $absen->id;?>" data-href="<?= base_url();?>kehadiran" data-url="<?= base_url();?>kehadiran/alert_action" data-method="Rejected" class="btn btn-floating tooltipped red btn-alert" data-tooltip="Rejected"><i class="fa fa-times"></i></button>
-							<button class="btn btn-floating grey"><i class="fa fa-thumbs-up"></i></button>
+							if($absen->status == 0){
+						?>
+							<button type="button" class="btn btn-floating grey" disabled aria-label="Sudah ditolak"><i class="fa fa-times"></i></button>
+							<button type="button" data-id="<?= $absen->id;?>" data-href="<?= base_url();?>kehadiran" data-url="<?= base_url();?>kehadiran/alert_action" data-method="Approved" class="btn btn-floating tooltipped green btn-alert" data-tooltip="Setujui"><i class="fa fa-thumbs-up"></i></button>
 							<?php
 								} elseif($absen->status == 1){
 							?>
 							<button data-id="<?= $absen->id;?>" data-href="<?= base_url();?>kehadiran" data-url="<?= base_url();?>kehadiran/alert_action" data-method="Rejected" class="btn btn-floating tooltipped red btn-alert" data-tooltip="Rejected"><i class="fa fa-times"></i></button>
 							<button data-id="<?= $absen->id;?>" data-href="<?= base_url();?>kehadiran" data-url="<?= base_url();?>kehadiran/alert_action" data-method="Approved" class="btn btn-floating tooltipped green btn-alert" data-tooltip="Approved"><i class="fa fa-thumbs-up"></i></button>
 							<?php
-								} elseif($absen->status == 2){
-							?>
-							<button class="btn btn-floating grey"><i class="fa fa-times"></i></button>
-							<button class="btn btn-floating grey"><i class="fa fa-thumbs-up"></i></button>
+							} elseif($absen->status == 2){
+						?>
+							<button type="button" data-id="<?= $absen->id;?>" data-href="<?= base_url();?>kehadiran" data-url="<?= base_url();?>kehadiran/alert_action" data-method="Rejected" class="btn btn-floating tooltipped red btn-alert" data-tooltip="Tolak"><i class="fa fa-times"></i></button>
+							<button type="button" class="btn btn-floating grey" disabled aria-label="Sudah disetujui"><i class="fa fa-thumbs-up"></i></button>
 							<?php
 								}
 							?>

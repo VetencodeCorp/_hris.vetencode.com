@@ -16,7 +16,7 @@
 <!-- CSS  -->
 <link href="<?= base_url();?>assets/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 <link href="<?= base_url();?>assets/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
-<link href="<?= base_url();?>assets/css/presenz-theme.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+<link href="<?= base_url();?>assets/css/presenz-theme.css?v=<?= filemtime(FCPATH . 'assets/css/presenz-theme.css'); ?>" type="text/css" rel="stylesheet" media="screen,projection"/>
 
 <!-- data-tables -->
 <link href="<?= base_url();?>assets/vendor/data-tables/css/jquery.dataTables.min.css" type="text/css" rel="stylesheet" media="screen,projection">
