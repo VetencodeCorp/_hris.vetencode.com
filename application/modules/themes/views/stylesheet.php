@@ -9,12 +9,14 @@
 <!-- Favicons -->
 <link rel="icon" href="<?= base_url();?>assets/images/logo.png" sizes="32x32">
 <link rel="apple-touch-icon-precomposed" href="<?= base_url();?>assets/images/logo.png">
-<meta name="msapplication-TileColor" content="#00bcd4">
-<meta name="msapplication-TileImage" content="<?= base_url();?>assets/images/logo.png">
+<meta name="theme-color" content="#1A1B3A">
+<meta name="msapplication-TileColor" content="#1A1B3A">
+<meta name="msapplication-TileImage" content="<?= base_url();?>assets/images/brand-logo.png">
 <!-- For Windows Phone -->
 <!-- CSS  -->
 <link href="<?= base_url();?>assets/css/materialize.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 <link href="<?= base_url();?>assets/css/style.css" type="text/css" rel="stylesheet" media="screen,projection"/>
+<link href="<?= base_url();?>assets/css/presenz-theme.css" type="text/css" rel="stylesheet" media="screen,projection"/>
 
 <!-- data-tables -->
 <link href="<?= base_url();?>assets/vendor/data-tables/css/jquery.dataTables.min.css" type="text/css" rel="stylesheet" media="screen,projection">

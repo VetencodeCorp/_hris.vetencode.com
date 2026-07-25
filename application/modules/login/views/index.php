@@ -1,44 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 	<head>
-		<?= $this->load->view('themes/stylesheet');?>
-		<link href="<?= base_url();?>assets/css/page-center.css" type="text/css" rel="stylesheet" media="screen,projection">
+		<?= $this->load->view('themes/stylesheet'); ?>
+		<title><?= html_escape($title); ?></title>
 	</head>
 
-	<body class="grey darken-1">
-		<div id="login-page" class="row">
-			<div class="col s12 card-panel">
-				<div id="form-login" data-url="<?= base_url();?>login/auth">
-					<div class="row no-margin">
-						<div class="input-field col s12 center">
-							<img src="<?= base_url();?>assets/images/logo.png" alt="" class="responsive-img valign profile-image-login">
-							<p class="center login-form-text">
-								V E T E N C O D E
-							</p>
-						</div>
+	<body class="auth-page">
+		<main class="auth-shell">
+			<section class="auth-brand-panel" aria-label="Identitas aplikasi">
+				<div class="auth-brand-content">
+					<div class="auth-logo-wrap">
+						<img src="<?= base_url(); ?>assets/images/brand-logo.png" alt="Logo Vetencode HRIS">
 					</div>
-					<div class="row no-margin">
-						<div class="input-field col s12">
-							<input id="phone" name="phone" type="text">
-							<label for="phone" class="center-align">No. HP</label>
-						</div>
+					<h1>Kerja terhubung.<br>Tim lebih tertata.</h1>
+					<p>
+						Kelola kehadiran, insentif, dan aktivitas pegawai dalam satu sistem yang ringkas dan mudah digunakan.
+					</p>
+					<div class="auth-node-line">Connected Workforce</div>
+				</div>
+			</section>
+
+			<section class="auth-form-panel">
+				<div class="auth-card">
+					<div class="auth-mobile-logo">
+						<img src="<?= base_url(); ?>assets/images/brand-logo.png" alt="Logo Vetencode HRIS">
 					</div>
-					<div class="row no-margin">
-						<div class="input-field col s12">
-							<input id="password" type="password">
+
+					<div class="auth-eyebrow">Vetencode HRIS</div>
+					<h2>Selamat datang</h2>
+					<p class="auth-subtitle">Masuk untuk melanjutkan aktivitas perusahaan.</p>
+
+					<div id="form-login" data-url="<?= base_url(); ?>login/auth">
+						<div class="auth-field">
+							<label for="phone">Nomor HP</label>
+							<div class="auth-input-wrap">
+								<i class="fa fa-phone" aria-hidden="true"></i>
+								<input
+									id="phone"
+									name="phone"
+									type="text"
+									inputmode="numeric"
+									autocomplete="username"
+									placeholder="Contoh: 081234567890"
+									aria-label="Nomor HP"
+								>
+							</div>
+						</div>
+
+						<div class="auth-field">
 							<label for="password">Password</label>
+							<div class="auth-input-wrap">
+								<i class="fa fa-lock" aria-hidden="true"></i>
+								<input
+									id="password"
+									name="password"
+									type="password"
+									autocomplete="current-password"
+									placeholder="Masukkan password"
+									aria-label="Password"
+								>
+							</div>
 						</div>
+
+						<button
+							type="button"
+							class="auth-submit"
+							data-href="<?= base_url(); ?>dashboard"
+							id="btn-login"
+						>
+							Masuk
+						</button>
 					</div>
-					<div class="row no-margin">
-						<div class="input-field col s12">
-							<button class="btn-submit col s12" data-href="<?= base_url();?>dashboard" id="btn-login">Login</button>
-						</div>
+
+					<div class="auth-footer">
+						&copy; <?= date('Y'); ?> Vetencode. Seluruh hak dilindungi.
 					</div>
 				</div>
-			</div>
-		</div>
-		<?= $this->load->view('themes/script');?> 
-		<script type="text/javascript" src="<?= base_url();?>assets/js/modules/login.js"></script>
-	</body>
+			</section>
+		</main>
 
+		<?= $this->load->view('themes/script'); ?>
+		<script type="text/javascript" src="<?= base_url(); ?>assets/js/modules/login.js"></script>
+	</body>
 </html>

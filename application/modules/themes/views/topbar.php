@@ -1,199 +1,150 @@
-<div class="navbar-fixed">
-	<nav class="red darken-4" role="navigation">
-		<div class="nav-wrapper">
-			<a id="logo-container" href="<?= base_url();?>dashboard" class="brand-logo">vetencode</a>
-			<ul class="right hide-on-med-and-down">
-				<li>
-					<a href="<?= base_url();?>profile" class="tooltipped" data-tooltip="Profile">
-						<?= strtoupper(getUser()->fullname);?>
-					</a>
-				</li>
-				<li>
-					<a href="#form-logout" class="modal-trigger">
-						<i class="fa fa-sign-out fa-2x tooltipped" data-tooltip="Log Out"></i>
-					</a>
-				</li>
-			</ul>
-	
-			<ul id="nav-mobile" class="sidenav">
-				<li>
-					<a href="<?= base_url();?>profile" class="collapsible-header"><i class="fa fa-user-circle-o icon-menu"></i> <?= strtoupper(getUser()->fullname);?></a>
-				</li>
-				<hr>
-				<li>
-					<a href="<?= base_url();?>dashboard" class="collapsible-header"><i class="fa fa-th-large icon-menu"></i> Dashboard</a>
-				</li>
-				<?php
-					if(is_access() ==  1){
-				?>
-				<li>
-					<ul class="collapsible collapsible-accordion">
-						<li>
-							<a class="collapsible-header" tabindex="0"><i class="fa fa-th-list icon-menu"></i> Master Data <i class="fa fa-angle-right right icon-parent-menu"></i></a>
-							<div class="collapsible-body">
-								<ul>
-									<?php
-										if(is_access() == 1){
-									?>
-									<li class="child-menu">
-										<a href="<?= base_url();?>akses">Akses</a>
-									</li>
-									<?php
-										}
-									?>
-									<li class="child-menu">
-										<a href="<?= base_url();?>user">User</a>
-									</li>
-								</ul>
-							</div>
-						</li>
-					</ul>
-				</li>
+<?php
+$topbarUser = getUser();
+$topbarAccess = (int) $topbarUser->access_id;
+$topbarUri = trim($this->uri->uri_string(), '/');
+$topbarTitle = isset($title) && $title ? $title : 'Dashboard';
+$topbarInitial = strtoupper(substr(trim($topbarUser->fullname), 0, 1));
+$topbarRole = getAccess();
 
-				<li>
-					<a href="<?= base_url();?>kehadiran" class="collapsible-header"><i class="fa fa-check-square-o icon-menu"></i> Absen</a>
-				</li>
+$topbarActive = static function (array $matches) use ($topbarUri) {
+	foreach ($matches as $match) {
+		if ($topbarUri === $match || strpos($topbarUri, $match . '/') === 0) {
+			return true;
+		}
+	}
 
-				<li>
-					<ul class="collapsible collapsible-accordion">
-						<li>
-							<a class="collapsible-header" tabindex="0"><i class="fa fa-money icon-menu"></i> Insentif <i class="fa fa-angle-right right icon-parent-menu"></i></a>
-							<div class="collapsible-body">
-								<ul>
-									<li class="child-menu">
-										<a href="<?= base_url();?>insentif-mingguan">Mingguan</a>
-									</li>
-									<?php
-										if(is_access() == 1){
-									?>
-									<li class="child-menu">
-										<a href="<?= base_url();?>insentif-gapok">Gaji Pokok</a>
-									</li>
-									<?php
-										}
-									?>
-								</ul>
-							</div>
-						</li>
-					</ul>
-				</li>
-				
-				<li>
-					<ul class="collapsible collapsible-accordion">
-						<li>
-							<a class="collapsible-header" tabindex="0"><i class="fa fa-info-circle icon-menu"></i> Report <i class="fa fa-angle-right right icon-parent-menu"></i></a>
-							<div class="collapsible-body">
-								<ul>
-									<li class="child-menu">
-										<a href="<?= base_url();?>report-absen">Absensi</a>
-									</li>
-									<li class="child-menu">
-										<a href="<?= base_url();?>report-mingguan">Insentif Mingguan</a>
-									</li>
-									<?php
-										if(is_access() == 1){
-									?>
-									<li class="child-menu">
-										<a href="<?= base_url();?>report-gapok">Gaji Pokok</a>
-									</li>
-									<?php
-										}
-									?>
-								</ul>
-							</div>
-						</li>
-					</ul>
-				</li>
-				
-				<?php
-					}
-				?>
-				
-				<?php
-		  			if(is_access() == 2){
-		  		?>
-		  		<li>
-					<ul class="collapsible collapsible-accordion">
-						<li>
-							<a class="collapsible-header" tabindex="0"><i class="fa fa-th-list icon-menu"></i> Master Data <i class="fa fa-angle-right right icon-parent-menu"></i></a>
-							<div class="collapsible-body">
-								<ul>
-									<li class="child-menu">
-										<a href="<?= base_url();?>user">User</a>
-									</li>
-								</ul>
-							</div>
-						</li>
-					</ul>
-				</li>
-		  		<li>
-		    		<a href="<?= base_url();?>kehadiran" class="collapsible-header"><i class="fa fa-check-square-o icon-menu"></i> Absen</a>
-		  		</li>
-		  		<li>
-					<ul class="collapsible collapsible-accordion">
-						<li>
-							<a class="collapsible-header" tabindex="0"><i class="fa fa-money icon-menu"></i> Insentif <i class="fa fa-angle-right right icon-parent-menu"></i></a>
-							<div class="collapsible-body">
-								<ul>
-									<li class="child-menu">
-										<a href="<?= base_url();?>insentif-mingguan">Mingguan</a>
-									</li>
-								</ul>
-							</div>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<ul class="collapsible collapsible-accordion">
-						<li>
-							<a class="collapsible-header" tabindex="0"><i class="fa fa-info-circle icon-menu"></i> Report <i class="fa fa-angle-right right icon-parent-menu"></i></a>
-							<div class="collapsible-body">
-								<ul>
-									<li class="child-menu">
-										<a href="<?= base_url();?>report-absen">Absensi</a>
-									</li>
-								</ul>
-							</div>
-						</li>
-					</ul>
-				</li>
-		  		<?php
-		  			}
-		  		?>
-				
-				<!--
-				<?php
-					if(is_access() == 3){
-				?>
-				<li>
-					<a href="<?= base_url();?>uang-mingguan" class="collapsible-header"><i class="fa fa-calendar-check-o icon-menu"></i> Insentif Mingguan</a>
-				</li>
-				<?php
-					}
-				?>
-				-->
-				<hr>
-				<li>
-					<a href="#form-logout" class="collapsible-header modal-trigger"><i class="fa fa-sign-out icon-menu"></i> Log Out</a>
-				</li>
-			</ul>
-			<a href="#" data-target="nav-mobile" class="sidenav-trigger"><i class="fa fa-bars fa-2x"></i></a>
-			<div class="right hide-on-large-only">
-				
+	return false;
+};
+
+$mobileSections = array();
+
+if ($topbarAccess === 1) {
+	$mobileSections = array(
+		array('label' => null, 'items' => array(
+			array('label' => 'Dashboard', 'url' => 'dashboard', 'icon' => 'fa-th-large', 'match' => array('dashboard')),
+		)),
+		array('label' => 'Master Data', 'items' => array(
+			array('label' => 'Akses', 'url' => 'akses', 'icon' => 'fa-shield', 'match' => array('akses', 'add-akses', 'edit-akses')),
+			array('label' => 'User', 'url' => 'user', 'icon' => 'fa-users', 'match' => array('user', 'add-user', 'edit-user')),
+		)),
+		array('label' => 'Kehadiran', 'items' => array(
+			array('label' => 'Monitoring Absen', 'url' => 'kehadiran', 'icon' => 'fa-check-square-o', 'match' => array('kehadiran')),
+		)),
+		array('label' => 'Insentif', 'items' => array(
+			array('label' => 'Insentif Mingguan', 'url' => 'insentif-mingguan', 'icon' => 'fa-calendar-check-o', 'match' => array('insentif-mingguan', 'add-mingguan', 'edit-insentif-mingguan')),
+			array('label' => 'Gaji Pokok', 'url' => 'insentif-gapok', 'icon' => 'fa-money', 'match' => array('insentif-gapok', 'add-gapok', 'edit-gapok')),
+		)),
+		array('label' => 'Laporan', 'items' => array(
+			array('label' => 'Absensi', 'url' => 'report-absen', 'icon' => 'fa-file-text-o', 'match' => array('report-absen')),
+			array('label' => 'Insentif Mingguan', 'url' => 'report-mingguan', 'icon' => 'fa-line-chart', 'match' => array('report-mingguan')),
+			array('label' => 'Gaji Pokok', 'url' => 'report-gapok', 'icon' => 'fa-bar-chart', 'match' => array('report-gapok')),
+		)),
+	);
+} elseif ($topbarAccess === 2) {
+	$mobileSections = array(
+		array('label' => null, 'items' => array(
+			array('label' => 'Dashboard', 'url' => 'dashboard', 'icon' => 'fa-th-large', 'match' => array('dashboard')),
+		)),
+		array('label' => 'Kepegawaian', 'items' => array(
+			array('label' => 'User', 'url' => 'user', 'icon' => 'fa-users', 'match' => array('user', 'add-user', 'edit-user')),
+		)),
+		array('label' => 'Kehadiran', 'items' => array(
+			array('label' => 'Monitoring Absen', 'url' => 'kehadiran', 'icon' => 'fa-check-square-o', 'match' => array('kehadiran')),
+		)),
+		array('label' => 'Insentif', 'items' => array(
+			array('label' => 'Insentif Mingguan', 'url' => 'insentif-mingguan', 'icon' => 'fa-calendar-check-o', 'match' => array('insentif-mingguan', 'add-mingguan', 'edit-insentif-mingguan')),
+		)),
+		array('label' => 'Laporan', 'items' => array(
+			array('label' => 'Absensi', 'url' => 'report-absen', 'icon' => 'fa-file-text-o', 'match' => array('report-absen')),
+		)),
+	);
+} else {
+	$mobileSections = array(
+		array('label' => null, 'items' => array(
+			array('label' => 'Dashboard', 'url' => 'dashboard', 'icon' => 'fa-th-large', 'match' => array('dashboard')),
+		)),
+	);
+}
+?>
+
+<header class="app-topbar">
+	<div class="app-topbar-inner">
+		<div class="app-topbar-left">
+			<a href="#!" data-target="nav-mobile" class="app-mobile-trigger sidenav-trigger" aria-label="Buka navigasi">
+				<i class="fa fa-bars" aria-hidden="true"></i>
+			</a>
+			<div class="app-topbar-title">
+				<strong><?= html_escape($topbarTitle); ?></strong>
+				<span class="app-topbar-date"><?= $this->fungsi->tgl_indo(date('Y-m-d')); ?></span>
 			</div>
 		</div>
-	</nav>
-</div>
+
+		<a href="<?= base_url(); ?>profile" class="app-user-menu">
+			<span class="app-user-avatar"><?= html_escape($topbarInitial); ?></span>
+			<span class="app-user-copy">
+				<span class="app-user-name"><?= html_escape($topbarUser->fullname); ?></span>
+				<span class="app-user-role"><?= html_escape($topbarRole); ?></span>
+			</span>
+		</a>
+	</div>
+</header>
+
+<ul id="nav-mobile" class="sidenav app-mobile-nav">
+	<li>
+		<a href="<?= base_url(); ?>dashboard" class="app-brand">
+			<span class="app-brand-logo">
+				<img src="<?= base_url(); ?>assets/images/brand-logo.png" alt="Vetencode HRIS">
+			</span>
+			<span>
+				<span class="brand-name">Vetencode HRIS</span>
+				<span class="brand-caption"><?= $topbarAccess > 2 ? 'Portal Karyawan' : 'Panel Admin'; ?></span>
+			</span>
+		</a>
+	</li>
+
+	<?php foreach ($mobileSections as $section): ?>
+		<?php if ($section['label']): ?>
+			<li><div class="app-nav-label"><?= html_escape($section['label']); ?></div></li>
+		<?php endif; ?>
+
+		<?php foreach ($section['items'] as $item): ?>
+			<li>
+				<a href="<?= base_url($item['url']); ?>" class="app-nav-item <?= $topbarActive($item['match']) ? 'active' : ''; ?>">
+					<i class="fa <?= html_escape($item['icon']); ?>" aria-hidden="true"></i>
+					<span><?= html_escape($item['label']); ?></span>
+				</a>
+			</li>
+		<?php endforeach; ?>
+	<?php endforeach; ?>
+
+	<li><div class="app-nav-label">Akun</div></li>
+	<li>
+		<a href="<?= base_url(); ?>profile" class="app-nav-item <?= $topbarActive(array('profile')) ? 'active' : ''; ?>">
+			<i class="fa fa-user-circle-o" aria-hidden="true"></i>
+			<span>Profile</span>
+		</a>
+	</li>
+	<li>
+		<a href="#form-logout" class="app-nav-item danger modal-trigger">
+			<i class="fa fa-sign-out" aria-hidden="true"></i>
+			<span>Keluar</span>
+		</a>
+	</li>
+</ul>
 
 <div id="form-logout" class="modal modal-small">
 	<div class="modal-content center">
-		<p>
-			<i class="fa fa-sign-out fa-5x"></i>
-		</p>
-		<h5>Apakah anda yakin ?</h5>
-		<div class="row padt25">
-			<div class="col s12">
-				<a href="<?= base_url();?>login/logout" class="btn btn-submit col s12">ok</a>
+		<div class="app-user-avatar" style="margin: 0 auto 14px;">
+			<i class="fa fa-sign-out" aria-hidden="true"></i>
+		</div>
+		<h5>Keluar dari aplikasi?</h5>
+		<p style="color: var(--ink-soft);">Sesi Anda akan diakhiri.</p>
+		<div class="row" style="margin: 24px 0 0;">
+			<div class="col s6">
+				<button type="button" class="btn-cancel modal-close" style="width: 100%;">Batal</button>
+			</div>
+			<div class="col s6">
+				<a href="<?= base_url(); ?>login/logout" class="btn-submit" style="display: block; width: 100%;">Keluar</a>
 			</div>
 		</div>
 	</div>
