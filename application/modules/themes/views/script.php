@@ -9,6 +9,6 @@
 
 <!-- data-tables -->
 <script type="text/javascript" src="<?= base_url();?>assets/vendor/data-tables/js/jquery.dataTables.min.js"></script>
-<script type="text/javascript" src="<?= base_url();?>assets/vendor/data-tables/data-tables-script.js"></script>
+<script type="text/javascript" src="<?= base_url();?>assets/vendor/data-tables/data-tables-script.js?v=<?= filemtime(FCPATH . 'assets/vendor/data-tables/data-tables-script.js'); ?>"></script>
 <!-- select2 -->
 <script type="text/javascript" src="<?= base_url();?>assets/vendor/select2/js/select2.min.js"></script>

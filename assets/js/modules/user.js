@@ -172,8 +172,11 @@ $(document).on('click', '.btn-alert', function(){
 		type: 'POST', 
 		data: {id: id, method: method}, 
 		success: function(response){
-			$('#modal-alert').modal('open');
 			$('#modal-alert').html(response);
+			$('#modal-alert').modal('open');
+		},
+		error: function(){
+			M.toast({html: '<span>Dialog aksi gagal dimuat.</span>'});
 		}
 	});
 });
