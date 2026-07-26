@@ -722,6 +722,30 @@ html.sidebar-collapsed .content {
   cursor: not-allowed;
 }
 
+/* Attendance camera keeps live and captured frames at one portrait ratio. */
+.attendance-camera-column {
+  max-width: 430px;
+}
+
+#my_camera {
+  width: 100% !important;
+  height: auto !important;
+  aspect-ratio: 3 / 4;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #171821;
+}
+
+#my_camera video,
+#my_camera canvas,
+#my_camera .attendance-camera-preview {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
 input:not([type]),
 input[type=text]:not(.browser-default),
 input[type=password]:not(.browser-default),

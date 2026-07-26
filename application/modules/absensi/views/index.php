@@ -18,7 +18,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col s12 m6 l3">
+				<div class="col s12 m8 l5 attendance-camera-column">
 					<div id="my_camera"></div>
 					<br>
 					<div id="pre_take_buttons">
