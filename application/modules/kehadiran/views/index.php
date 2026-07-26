@@ -4,7 +4,7 @@
 		<?= $this->load->view('themes/stylesheet');?>
 		<title><?= $title;?></title>
 	</head>
-	<body>
+	<body class="attendance-page">
 		<?= $this->load->view('themes/topbar');?>
 		<?= $this->load->view('themes/sidebar');?>
 		<div class="content">
@@ -26,7 +26,7 @@
 				?>
 				
 				<div class="col s12 m6 l3">
-					<div class="card-panel">
+					<div class="card-panel attendance-card">
 						<?= strtoupper($data->fullname);?>
 						<?php
 							if($data->check_absen > 0){
@@ -34,7 +34,7 @@
 						<?php
 							foreach($data->absen as $absen):
 						?>
-						<img class="materialboxed responsive-img" width="100%" src="<?php if($absen->foto == NULL){?> <?= base_url();?>assets/images/no-foto.jpg <?php } else{?><?= base_url();?><?= $absen->foto;?><?php }?>">
+						<img class="materialboxed responsive-img attendance-photo" src="<?php if($absen->foto == NULL){?><?= base_url();?>assets/images/no-foto.jpg<?php } else{?><?= base_url();?><?= $absen->foto;?><?php }?>" alt="Foto absensi <?= html_escape($data->fullname); ?>">
 						<br>
 						<span><?= $absen->masuk;?></span>
 						<?php
@@ -154,7 +154,7 @@
 						<?php
 							} else{
 						?>
-						<img style="margin-bottom: -53px;" class="materialboxed responsive-img" width="100%" src="<?= base_url();?>assets/images/no-foto.jpg">
+						<img class="materialboxed responsive-img attendance-photo attendance-photo-placeholder" src="<?= base_url();?>assets/images/no-foto.jpg" alt="Belum ada foto absensi <?= html_escape($data->fullname); ?>">
 						<br>
 						<div class="row center mb-0">
 							<div class="input-field col s12">
@@ -199,9 +199,9 @@
 					foreach($dataPulang->absen_pulang as $absenPulang):
 				?>
 				<div class="col s12 m6 l3">
-					<div class="card-panel">
+					<div class="card-panel attendance-card">
 						<?= strtoupper($dataPulang->fullname);?>
-						<img class="materialboxed responsive-img" width="100%" src="<?php if($absenPulang->foto_pulang == NULL){?> <?= base_url();?>assets/images/no-foto.jpg <?php } else{?><?= base_url();?><?= $absenPulang->foto_pulang;?><?php }?>">
+						<img class="materialboxed responsive-img attendance-photo" src="<?php if($absenPulang->foto_pulang == NULL){?><?= base_url();?>assets/images/no-foto.jpg<?php } else{?><?= base_url();?><?= $absenPulang->foto_pulang;?><?php }?>" alt="Foto pulang <?= html_escape($dataPulang->fullname); ?>">
 						<br>
 						PUKUL : <span><?= $absenPulang->pulang;?></span>
 					</div>

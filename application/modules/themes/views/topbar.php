@@ -70,6 +70,9 @@ if ($topbarAccess === 1) {
 <header class="app-topbar">
 	<div class="app-topbar-inner">
 		<div class="app-topbar-left">
+			<button type="button" id="sidebar-toggle" class="app-sidebar-toggle" aria-label="Sembunyikan sidebar" aria-expanded="true">
+				<i class="fa fa-bars" aria-hidden="true"></i>
+			</button>
 			<a href="#!" data-target="nav-mobile" class="app-mobile-trigger sidenav-trigger" aria-label="Buka navigasi">
 				<i class="fa fa-bars" aria-hidden="true"></i>
 			</a>
