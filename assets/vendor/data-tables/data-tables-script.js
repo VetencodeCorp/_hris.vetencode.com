@@ -1,7 +1,34 @@
 $(document).ready(function(){
-    $('#data-table-simple').DataTable({
-    	"lengthChange": false
-    });
+    var simpleTable = $('#data-table-simple');
+
+    if (simpleTable.length && !$.fn.dataTable.isDataTable(simpleTable[0])) {
+        simpleTable.DataTable({
+            lengthChange: false,
+            pageLength: 10,
+            autoWidth: false,
+            language: {
+                search: '',
+                searchPlaceholder: 'Cari data...',
+                emptyTable: 'Belum ada data.',
+                zeroRecords: 'Data tidak ditemukan.',
+                info: 'Menampilkan _START_–_END_ dari _TOTAL_ data',
+                infoEmpty: 'Belum ada data',
+                infoFiltered: '(disaring dari _MAX_ data)',
+                paginate: {
+                    previous: '‹',
+                    next: '›'
+                }
+            },
+            initComplete: function(){
+                $('#data-table-simple_filter input')
+                    .attr('aria-label', 'Cari data')
+                    .attr('placeholder', 'Cari data...');
+            },
+            drawCallback: function(){
+                $('.tooltipped').tooltip();
+            }
+        });
+    }
     
     var table = $('#data-table-row-grouping').DataTable({
         "columnDefs": [

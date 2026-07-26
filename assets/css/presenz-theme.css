@@ -66,6 +66,7 @@ a {
   flex-direction: column;
   overflow: hidden;
   background: var(--sidebar);
+  transition: transform .22s ease;
 }
 
 .app-brand {
@@ -203,6 +204,7 @@ a {
   border-bottom: 1px solid var(--border);
   background: rgba(250, 246, 240, .94);
   backdrop-filter: blur(12px);
+  transition: left .22s ease;
 }
 
 .app-topbar-inner {
@@ -212,6 +214,13 @@ a {
   justify-content: space-between;
   gap: 20px;
   padding: 0 28px;
+}
+
+.app-topbar-left {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 12px;
 }
 
 .app-topbar-title {
@@ -292,11 +301,47 @@ a {
   color: var(--ink);
 }
 
+.app-sidebar-toggle {
+  display: inline-flex;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: #fff;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: border-color .16s ease, background .16s ease, color .16s ease;
+}
+
+.app-sidebar-toggle:hover,
+.app-sidebar-toggle:focus {
+  border-color: var(--primary);
+  background: rgba(59, 62, 148, .06);
+  color: var(--primary);
+}
+
 .content {
   width: auto;
   min-height: 100vh;
   margin: 0 0 0 var(--sidebar-width) !important;
   padding: calc(var(--topbar-height) + 26px) 28px 36px;
+  transition: margin-left .22s ease;
+}
+
+html.sidebar-collapsed .app-sidebar {
+  transform: translateX(-100%);
+}
+
+html.sidebar-collapsed .app-topbar {
+  left: 0;
+}
+
+html.sidebar-collapsed .content {
+  margin-left: 0 !important;
 }
 
 .content > .row:first-child,
@@ -389,6 +434,36 @@ a {
   opacity: .55;
 }
 
+/* Attendance photo cards */
+.attendance-card {
+  overflow: hidden;
+}
+
+.attendance-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  margin: 9px 0 13px;
+  border-radius: 9px;
+  background: var(--paper-dark);
+  object-fit: cover;
+  object-position: center;
+  image-orientation: from-image;
+}
+
+.attendance-photo-placeholder {
+  object-fit: cover;
+  opacity: .72;
+}
+
+.attendance-photo.active {
+  width: auto;
+  aspect-ratio: auto;
+  margin: 0;
+  border-radius: 0;
+  object-fit: contain;
+}
+
 input:not([type]),
 input[type=text]:not(.browser-default),
 input[type=password]:not(.browser-default),
@@ -446,6 +521,425 @@ table td {
   border-radius: 0;
   color: var(--ink);
   font-size: 13px;
+}
+
+/* PresenZ-style data pages */
+.page-intro {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 20px;
+}
+
+.page-eyebrow {
+  margin-bottom: 5px;
+  color: var(--accent-dark);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .9px;
+  text-transform: uppercase;
+}
+
+.page-intro h1 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.page-intro p {
+  margin: 6px 0 0;
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.page-primary-action {
+  display: inline-flex;
+  min-width: max-content;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.table-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.table-stat-card {
+  padding: 15px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: #fff;
+}
+
+.table-stat-label {
+  display: block;
+  color: var(--primary);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .45px;
+  text-transform: uppercase;
+}
+
+.table-stat-card.success .table-stat-label {
+  color: var(--success);
+}
+
+.table-stat-card.muted .table-stat-label {
+  color: var(--ink-faint);
+}
+
+.table-stat-card strong {
+  display: block;
+  margin-top: 3px;
+  color: var(--ink);
+  font-family: 'Fraunces', serif;
+  font-size: 26px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.presenz-table-card {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: #fff;
+}
+
+.presenz-table-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--border);
+}
+
+.presenz-table-heading h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.presenz-table-heading p {
+  margin: 4px 0 0;
+  color: var(--ink-soft);
+  font-size: 11.5px;
+}
+
+.table-count {
+  display: inline-flex;
+  min-width: max-content;
+  padding: 5px 9px;
+  border-radius: 7px;
+  background: var(--accent-bg);
+  color: var(--accent-dark);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.presenz-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+}
+
+table.presenz-table,
+table.dataTable.presenz-table {
+  width: 100% !important;
+  margin: 0 !important;
+  border: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+table.presenz-table th,
+table.presenz-table td,
+table.dataTable.presenz-table th,
+table.dataTable.presenz-table td {
+  box-sizing: border-box;
+}
+
+table.presenz-table thead,
+table.dataTable.presenz-table thead {
+  background: var(--paper-dark);
+}
+
+table.presenz-table thead th,
+table.dataTable.presenz-table thead th {
+  padding: 12px 15px;
+  border: 0;
+  border-bottom: 1px solid var(--border);
+  background-color: transparent;
+  color: var(--ink-soft);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+table.presenz-table tbody tr,
+table.dataTable.presenz-table tbody tr,
+table.dataTable.presenz-table tbody tr.odd,
+table.dataTable.presenz-table tbody tr.even {
+  border-bottom: 1px solid var(--border);
+  background: #fff;
+  transition: background .16s ease;
+}
+
+table.presenz-table tbody tr:nth-child(even),
+table.dataTable.presenz-table tbody tr:nth-child(even) {
+  background: rgba(250, 246, 240, .3);
+}
+
+table.presenz-table tbody tr:hover,
+table.dataTable.presenz-table tbody tr:hover,
+table.dataTable.presenz-table tbody tr.odd:hover,
+table.dataTable.presenz-table tbody tr.even:hover {
+  background: rgba(59, 62, 148, .045);
+}
+
+table.presenz-table tbody tr:last-child {
+  border-bottom: 0;
+}
+
+table.presenz-table tbody td,
+table.dataTable.presenz-table tbody td {
+  padding: 12px 15px;
+  border: 0;
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 12.5px;
+  vertical-align: middle;
+}
+
+.table-number {
+  width: 58px;
+  color: var(--ink-faint) !important;
+  text-align: center;
+}
+
+.table-user {
+  display: flex;
+  min-width: 180px;
+  align-items: center;
+  gap: 11px;
+}
+
+.table-avatar {
+  display: inline-flex;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 36px;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid var(--accent);
+  border-radius: 10px;
+  background: var(--accent-bg);
+  color: var(--accent-dark);
+  font-family: 'Fraunces', serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.table-user-copy {
+  min-width: 0;
+}
+
+.table-user-copy strong,
+.table-user-copy span {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table-user-copy strong {
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.table-user-copy span {
+  margin-top: 2px;
+  color: var(--ink-faint);
+  font-size: 10.5px;
+}
+
+.table-phone,
+.table-currency {
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.table-role-badge,
+.table-status {
+  display: inline-flex;
+  min-width: max-content;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  border-radius: 7px;
+  font-size: 10.5px;
+  font-weight: 700;
+}
+
+.table-role-badge {
+  background: rgba(59, 62, 148, .09);
+  color: var(--primary);
+}
+
+.table-status.active {
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.table-status.inactive {
+  background: var(--paper-dark);
+  color: var(--ink-soft);
+}
+
+.table-status-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.table-actions-column {
+  min-width: 132px;
+}
+
+.table-actions {
+  min-width: 132px;
+  white-space: nowrap;
+}
+
+.table-action {
+  display: inline-flex;
+  width: 31px;
+  height: 31px;
+  align-items: center;
+  justify-content: center;
+  margin-left: 4px;
+  padding: 0;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink-soft);
+  cursor: pointer;
+  line-height: 1;
+  transition: border-color .16s ease, background .16s ease, color .16s ease;
+}
+
+.table-action:hover,
+.table-action:focus {
+  border-color: var(--primary);
+  background: rgba(59, 62, 148, .06);
+  color: var(--primary);
+}
+
+.table-action.success:hover,
+.table-action.success:focus {
+  border-color: var(--success);
+  background: var(--success-bg);
+  color: var(--success);
+}
+
+.table-action.warning:hover,
+.table-action.warning:focus {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+  color: var(--accent-dark);
+}
+
+.table-action.danger:hover,
+.table-action.danger:focus {
+  border-color: var(--danger);
+  background: var(--danger-bg);
+  color: var(--danger);
+}
+
+.presenz-table-card .dataTables_wrapper {
+  padding-bottom: 14px;
+}
+
+.presenz-table-card .dataTables_wrapper .dataTables_filter {
+  float: none;
+  padding: 14px 18px;
+  text-align: right;
+}
+
+.presenz-table-card .dataTables_wrapper .dataTables_filter label {
+  color: transparent;
+  font-size: 0;
+}
+
+.presenz-table-card .dataTables_wrapper .dataTables_filter input {
+  width: min(260px, 100%);
+  height: 38px;
+  margin: 0;
+  padding: 0 13px 0 36px;
+  border: 1.5px solid var(--border);
+  border-radius: 9px;
+  background-color: var(--paper);
+  background-image: linear-gradient(transparent, transparent);
+  color: var(--ink);
+  font-family: 'Inter', sans-serif;
+  font-size: 12.5px;
+}
+
+.presenz-table-card .dataTables_wrapper .dataTables_filter input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(59, 62, 148, .1);
+}
+
+.presenz-table-card .dataTables_wrapper .dataTables_info {
+  padding: 16px 18px 0;
+  color: var(--ink-faint);
+  font-size: 11px;
+}
+
+.presenz-table-card .dataTables_wrapper .dataTables_paginate {
+  padding: 11px 18px 0;
+}
+
+.presenz-table-card .dataTables_wrapper .dataTables_paginate .paginate_button {
+  min-width: 32px;
+  height: 32px;
+  margin-left: 4px;
+  padding: 7px 9px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink-soft) !important;
+  font-size: 11px;
+  line-height: 16px;
+}
+
+.presenz-table-card .dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.presenz-table-card .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff !important;
+}
+
+.presenz-table-card .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+  border-color: var(--primary);
+  background: rgba(59, 62, 148, .07);
+  color: var(--primary) !important;
+}
+
+.presenz-table-card table.dataTable.no-footer {
+  border-bottom: 1px solid var(--border);
 }
 
 .modal {
@@ -711,7 +1205,10 @@ body.auth-page {
 
 .auth-input-wrap input[type=text],
 .auth-input-wrap input[type=password] {
+  display: block;
+  box-sizing: border-box;
   width: 100%;
+  max-width: 100%;
   height: 46px;
   margin: 0;
   padding: 0 14px 0 42px;
@@ -782,6 +1279,10 @@ body.auth-page {
     border-radius: 9px;
   }
 
+  .app-sidebar-toggle {
+    display: none;
+  }
+
   .app-topbar-inner {
     padding: 0 18px;
   }
@@ -850,6 +1351,143 @@ body.auth-page {
   .content .title,
   .content > .row:first-child .left {
     font-size: 21px;
+  }
+
+  .page-intro {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .page-intro h1 {
+    font-size: 24px;
+  }
+
+  .page-primary-action {
+    width: 100%;
+  }
+
+  .table-stats {
+    grid-template-columns: 1fr;
+    gap: 9px;
+  }
+
+  .table-stat-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 14px;
+  }
+
+  .table-stat-card strong {
+    margin: 0;
+    font-size: 22px;
+  }
+
+  .presenz-table-heading {
+    align-items: flex-start;
+    padding: 16px;
+  }
+
+  .presenz-table-heading p {
+    display: none;
+  }
+
+  .presenz-table-card .dataTables_wrapper .dataTables_filter {
+    padding: 12px;
+  }
+
+  .presenz-table-card .dataTables_wrapper .dataTables_filter input {
+    width: 100%;
+  }
+
+  table.presenz-table thead,
+  table.dataTable.presenz-table thead {
+    display: none;
+  }
+
+  table.presenz-table,
+  table.presenz-table tbody,
+  table.presenz-table tr,
+  table.presenz-table td,
+  table.dataTable.presenz-table,
+  table.dataTable.presenz-table tbody,
+  table.dataTable.presenz-table tr,
+  table.dataTable.presenz-table td {
+    display: block;
+    width: 100% !important;
+  }
+
+  table.presenz-table tbody,
+  table.dataTable.presenz-table tbody {
+    padding: 0 12px 2px;
+  }
+
+  table.presenz-table tbody tr,
+  table.dataTable.presenz-table tbody tr,
+  table.dataTable.presenz-table tbody tr.odd,
+  table.dataTable.presenz-table tbody tr.even {
+    margin-bottom: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: #fff;
+  }
+
+  table.presenz-table tbody td,
+  table.dataTable.presenz-table tbody td {
+    display: flex;
+    min-height: 42px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    text-align: right !important;
+  }
+
+  table.presenz-table tbody td:last-child,
+  table.dataTable.presenz-table tbody td:last-child {
+    border-bottom: 0;
+  }
+
+  table.presenz-table tbody td::before,
+  table.dataTable.presenz-table tbody td::before {
+    color: var(--ink-faint);
+    content: attr(data-label);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .4px;
+    text-align: left;
+    text-transform: uppercase;
+  }
+
+  table.presenz-table .table-number,
+  table.dataTable.presenz-table .table-number {
+    display: none;
+  }
+
+  table.presenz-table td[data-label='User'],
+  table.dataTable.presenz-table td[data-label='User'] {
+    justify-content: flex-start;
+    text-align: left !important;
+  }
+
+  table.presenz-table td[data-label='User']::before,
+  table.dataTable.presenz-table td[data-label='User']::before {
+    display: none;
+  }
+
+  .table-actions {
+    justify-content: flex-end !important;
+  }
+
+  .presenz-table-card .dataTables_wrapper .dataTables_info,
+  .presenz-table-card .dataTables_wrapper .dataTables_paginate {
+    float: none;
+    padding-right: 12px;
+    padding-left: 12px;
+    text-align: center;
   }
 
   .auth-form-panel {
