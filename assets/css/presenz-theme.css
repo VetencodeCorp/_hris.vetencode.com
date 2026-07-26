@@ -464,6 +464,23 @@ html.sidebar-collapsed .content {
   object-fit: contain;
 }
 
+.dashboard-attendance-photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 8px;
+  background: var(--paper-dark);
+  object-fit: cover;
+  object-position: center;
+}
+
+.dashboard-attendance-photo.active {
+  width: auto;
+  aspect-ratio: auto;
+  border-radius: 0;
+  object-fit: contain;
+}
+
 input:not([type]),
 input[type=text]:not(.browser-default),
 input[type=password]:not(.browser-default),

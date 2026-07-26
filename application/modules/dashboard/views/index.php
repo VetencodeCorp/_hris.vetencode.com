@@ -26,7 +26,7 @@
 				?>
 				<div class="col s12 m6 l3">
 					<div class="card-panel">
-						<img class="materialboxed responsive-img" width="100%" src="<?= base_url();?>assets/images/no-foto.jpg"> &nbsp;
+						<img class="materialboxed responsive-img dashboard-attendance-photo" width="100%" src="<?= base_url();?>assets/images/no-foto.jpg"> &nbsp;
 						<span class="white-text orange pad5 right"><?= strtoupper($absen->flag);?></span>
 					</div>
 				</div>
@@ -35,7 +35,7 @@
 				?>
 				<div class="col s12 m6 l3">
 					<div class="card-panel">
-						<img class="materialboxed responsive-img" width="100%" src="<?= base_url();?><?= $absen->foto;?>">
+						<img class="materialboxed responsive-img dashboard-attendance-photo" width="100%" src="<?= base_url();?><?= $absen->foto;?>">
 						<br>
 						MASUK : <span><?= $absen->masuk;?></span>
 						<?php
@@ -56,7 +56,7 @@
 						<?php
 							if($absen->pulang){
 						?>
-						<img class="materialboxed responsive-img" width="100%" src="<?= base_url();?><?= $absen->foto_pulang;?>">
+						<img class="materialboxed responsive-img dashboard-attendance-photo" width="100%" src="<?= base_url();?><?= $absen->foto_pulang;?>">
 						<br>
 						PULANG : <span><?= $absen->pulang;?></span>
 						<?php
