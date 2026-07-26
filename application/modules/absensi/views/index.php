@@ -56,6 +56,6 @@
 		</div>
 		
 		<?= $this->load->view('themes/script');?>
-		<script type="text/javascript" src="<?= base_url();?>assets/js/modules/absen.js"></script>
+		<script type="text/javascript" src="<?= base_url();?>assets/js/modules/absen.js?v=<?= filemtime(FCPATH.'assets/js/modules/absen.js');?>"></script>
 	</body>
 </html>

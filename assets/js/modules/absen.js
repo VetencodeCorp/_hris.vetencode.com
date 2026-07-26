@@ -2,7 +2,13 @@ Webcam.set({
 	width: 320,
 	height: 240,
 	image_format: 'jpeg',
-	jpeg_quality: 90
+	jpeg_quality: 90,
+	flip_horiz: true,
+	constraints: {
+		facingMode: 'user',
+		width: { ideal: 640 },
+		height: { ideal: 480 }
+	}
 });
 Webcam.attach('#my_camera');
 
