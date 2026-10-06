@@ -7,6 +7,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['default_controller'] = 'login';
 
 $route['profile'] = 'dashboard/profile';
+$route['riwayat-absensi'] = 'riwayat/riwayat';
 
 // ======================= master data =================================
 // akses
