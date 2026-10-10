@@ -34,6 +34,7 @@ if ($sidebarAccess === 1) {
 			'label' => 'Kehadiran',
 			'items' => array(
 				array('label' => 'Monitoring Absen', 'url' => 'kehadiran', 'icon' => 'fa-check-square-o', 'match' => array('kehadiran')),
+				array('label' => 'Riwayat Absensi', 'url' => 'riwayat-absensi', 'icon' => 'fa-history', 'match' => array('riwayat-absensi')),
 			),
 		),
 		array(
@@ -91,6 +92,12 @@ if ($sidebarAccess === 1) {
 			'label' => null,
 			'items' => array(
 				array('label' => 'Dashboard', 'url' => 'dashboard', 'icon' => 'fa-th-large', 'match' => array('dashboard')),
+			),
+		),
+		array(
+			'label' => 'Kehadiran',
+			'items' => array(
+				array('label' => 'Riwayat Saya', 'url' => 'riwayat-absensi', 'icon' => 'fa-history', 'match' => array('riwayat-absensi')),
 			),
 		),
 	);

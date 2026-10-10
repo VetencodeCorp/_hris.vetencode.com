@@ -29,6 +29,7 @@ if ($topbarAccess === 1) {
 		)),
 		array('label' => 'Kehadiran', 'items' => array(
 			array('label' => 'Monitoring Absen', 'url' => 'kehadiran', 'icon' => 'fa-check-square-o', 'match' => array('kehadiran')),
+			array('label' => 'Riwayat Absensi', 'url' => 'riwayat-absensi', 'icon' => 'fa-history', 'match' => array('riwayat-absensi')),
 		)),
 		array('label' => 'Insentif', 'items' => array(
 			array('label' => 'Insentif Mingguan', 'url' => 'insentif-mingguan', 'icon' => 'fa-calendar-check-o', 'match' => array('insentif-mingguan', 'add-mingguan', 'edit-insentif-mingguan')),
@@ -62,6 +63,9 @@ if ($topbarAccess === 1) {
 	$mobileSections = array(
 		array('label' => null, 'items' => array(
 			array('label' => 'Dashboard', 'url' => 'dashboard', 'icon' => 'fa-th-large', 'match' => array('dashboard')),
+		)),
+		array('label' => 'Kehadiran', 'items' => array(
+			array('label' => 'Riwayat Saya', 'url' => 'riwayat-absensi', 'icon' => 'fa-history', 'match' => array('riwayat-absensi')),
 		)),
 	);
 }
