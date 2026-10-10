@@ -8,6 +8,10 @@ $route['default_controller'] = 'login';
 
 $route['profile'] = 'dashboard/profile';
 $route['riwayat-absensi'] = 'riwayat/riwayat';
+$route['absensi-manual'] = 'absensi_manual/absensi_manual';
+$route['absensi-manual/unlock'] = 'absensi_manual/absensi_manual/unlock';
+$route['absensi-manual/store'] = 'absensi_manual/absensi_manual/store';
+$route['absensi-manual/lock'] = 'absensi_manual/absensi_manual/lock';
 
 // ======================= master data =================================
 // akses
