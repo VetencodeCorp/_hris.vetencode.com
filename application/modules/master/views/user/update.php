@@ -83,7 +83,7 @@
 									<select id="flag">
 										<option value="" disabled <?= empty($user->flag) ? 'selected' : ''; ?>>Pilih Hari</option>
 										<?php foreach ($weeklyFlags as $value => $label): ?>
-											<option value="<?= html_escape($value); ?>" <?= $user->flag === $value ? 'selected' : ''; ?>><?= html_escape($label); ?> (<?= html_escape($value); ?>)</option>
+											<option value="<?= html_escape($value); ?>" <?= $user->flag === $value ? 'selected' : ''; ?>><?= html_escape($label); ?></option>
 										<?php endforeach; ?>
 									</select>
 									<label for="flag" class="active">Hari Input Insentif</label>
@@ -103,6 +103,6 @@
 			</div>
 		</div>
 		<?= $this->load->view('themes/script');?>
-		<script type="text/javascript" src="<?= base_url();?>assets/js/modules/user.js"></script>
+		<script type="text/javascript" src="<?= base_url();?>assets/js/modules/user.js?v=<?= filemtime(FCPATH . 'assets/js/modules/user.js'); ?>"></script>
 	</body>
 </html>
