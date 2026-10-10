@@ -1,4 +1,4 @@
-$('#akses_id').select2();
+$('#akses_id, #flag').select2();
 
 $(document).on('keyup', '#phone', function(){
 	if (/\D/g.test(this.value)){
@@ -12,6 +12,10 @@ $(document).on('keyup', '#input-gapok', function(){
   	}
   	
   	var gapok = $(this).val();
+	if(gapok == ''){
+		$('#gapok').val('');
+		return;
+	}
   	
   	$('#input-gapok').val(parseFloat(gapok).toLocaleString());
 	$('#gapok').val(gapok);
@@ -23,6 +27,10 @@ $(document).on('keyup', '#input-mingguan', function(){
   	}
   	
   	var mingguan = $(this).val();
+	if(mingguan == ''){
+		$('#mingguan').val('');
+		return;
+	}
   	
   	$('#input-mingguan').val(parseFloat(mingguan).toLocaleString());
 	$('#mingguan').val(mingguan);
@@ -40,9 +48,12 @@ $(document).on('click', '#btn-add', function(){
 	var passconf = $('#passconf').val();
 	var gapok = $('#gapok').val();
 	var mingguan = $('#mingguan').val();
+	var flag = $('#flag').val();
 	
 	if(access_id == null){
 		M.toast({html: '<span>Akses Wajib Dipilih !</span>'});
+	} else if(flag == null){
+		M.toast({html: '<span>Hari Input Insentif Wajib Dipilih !</span>'});
 	} else if(fullname == ''){
 		$('#fullname').focus();
   		M.toast({html: '<span>Nama Wajib Diisi !</span>'});
@@ -66,7 +77,7 @@ $(document).on('click', '#btn-add', function(){
 					$.ajax({
 						url: url, 
 						type: 'POST', 
-						data: {access_id: access_id, fullname: fullname, phone: phone, password: passconf, gapok: gapok, mingguan: mingguan}, 
+						data: {access_id: access_id, fullname: fullname, phone: phone, password: passconf, gapok: gapok, mingguan: mingguan, flag: flag},
 						success: function(response){
 							if(response > 0){
 								$('#btn-add').attr('disabled', true);
@@ -96,9 +107,12 @@ $(document).on('click', '#btn-update', function(){
 	var passconf = $('#passconf').val(); 
 	var gapok = $('#gapok').val();
 	var mingguan = $('#mingguan').val();
+	var flag = $('#flag').val();
 	
 	if(access_id == null){
 		M.toast({html: '<span>Akses Wajib Dipilih !</span>'});
+	} else if(flag == null){
+		M.toast({html: '<span>Hari Input Insentif Wajib Dipilih !</span>'});
 	} else if(fullname == ''){
 		$('#fullname').focus();
   		M.toast({html: '<span>Nama Wajib Diisi !</span>'});
@@ -120,14 +134,17 @@ $(document).on('click', '#btn-update', function(){
 						$.ajax({
 							url: url, 
 							type: 'POST', 
-							data: {access_id: access_id, fullname: fullname, phone: phone, password: passconf, gapok: gapok, mingguan: mingguan}, 
+							data: {access_id: access_id, fullname: fullname, phone: phone, password: passconf, gapok: gapok, mingguan: mingguan, flag: flag},
 							success: function(response){
-								$('#btn-update').attr('disabled', true);
-								M.toast({html: '<span>Edit User Sukses !</span>'});
-								
-								setTimeout(function() {
-									window.location.href = href;
-								}, 2000);
+								if(response > 0){
+									$('#btn-update').attr('disabled', true);
+									M.toast({html: '<span>Edit User Sukses !</span>'});
+									setTimeout(function() {
+										window.location.href = href;
+									}, 2000);
+								} else{
+									M.toast({html: '<span>Edit User Gagal !</span>'});
+								}
 							}
 						});
 					}
@@ -146,14 +163,17 @@ $(document).on('click', '#btn-update', function(){
 					$.ajax({
 						url: url, 
 						type: 'POST', 
-						data: {access_id: access_id, fullname: fullname, phone: phone, gapok: gapok, mingguan: mingguan}, 
+						data: {access_id: access_id, fullname: fullname, phone: phone, gapok: gapok, mingguan: mingguan, flag: flag},
 						success: function(response){
-							$('#btn-update').attr('disabled', true);
-							M.toast({html: '<span>Edit User Sukses !</span>'});
-							
-							setTimeout(function() {
-								window.location.href = href;
-							}, 2000);
+							if(response > 0){
+								$('#btn-update').attr('disabled', true);
+								M.toast({html: '<span>Edit User Sukses !</span>'});
+								setTimeout(function() {
+									window.location.href = href;
+								}, 2000);
+							} else{
+								M.toast({html: '<span>Edit User Gagal !</span>'});
+							}
 						}
 					});
 				}
@@ -169,8 +189,8 @@ $(document).on('click', '.btn-alert', function(){
 	
 	$.ajax({
 		url: url, 
-		type: 'POST', 
-		data: {id: id, method: method}, 
+		type: 'POST',
+		data: {id: id, method: method},
 		success: function(response){
 			$('#modal-alert').html(response);
 			$('#modal-alert').modal('open');

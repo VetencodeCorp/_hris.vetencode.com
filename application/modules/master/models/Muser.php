@@ -76,8 +76,9 @@ class Muser extends CI_Model{
 			'password' => md5($this->input->post('password')), 
 			'fullname' => $this->input->post('fullname'), 
 			'seoname' => getSeoName($this->input->post('fullname')), 
-			'gapok' => $this->input->post('gapok'), 
-			'mingguan' => $this->input->post('mingguan'), 
+			'gapok' => $this->numericValue('gapok'),
+			'mingguan' => $this->numericValue('mingguan'),
+			'flag' => $this->input->post('flag', true),
 			'created_by' => $this->session->userdata('id')
 		);
 		$this->db->insert('user', $data);
@@ -109,9 +110,10 @@ class Muser extends CI_Model{
 			'phone' => $this->input->post('phone'), 
 			'fullname' => $this->input->post('fullname'), 
 			'seoname' => getSeoName($this->input->post('fullname')), 
-			'gapok' => $this->input->post('gapok'), 
-			'mingguan' => $this->input->post('mingguan'), 
-			'created_by' => $this->session->userdata('id')
+			'gapok' => $this->numericValue('gapok'),
+			'mingguan' => $this->numericValue('mingguan'),
+			'flag' => $this->input->post('flag', true),
+			'updated_by' => $this->session->userdata('id')
 		);
 		if($this->input->post('password')){
 			$data['password'] = md5($this->input->post('password')); 
@@ -119,6 +121,11 @@ class Muser extends CI_Model{
 		$this->db->where('id', $id);
 		$this->db->update('user', $data);
 		return TRUE;
+	}
+
+	private function numericValue($field){
+		$value = $this->input->post($field, true);
+		return is_numeric($value) && $value >= 0 ? $value : 0;
 	}
 
 }

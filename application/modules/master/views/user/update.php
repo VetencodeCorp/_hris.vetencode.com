@@ -63,8 +63,8 @@
 							?>
 							<div class="row mb-0">
 								<div class="input-field col s12">
-									<input type="text" id="input-gapok" value="<?= number_format($user->gapok);?>" class="text-jumlah" />
-									<input type="hidden" id="gapok" value="<?= $user->gapok;?>" />
+									<input type="text" id="input-gapok" value="<?= number_format((float) ($user->gapok ?? 0));?>" class="text-jumlah" />
+									<input type="hidden" id="gapok" value="<?= (float) ($user->gapok ?? 0);?>" />
 									<label for="input-gapok">Gaji Pokok</label>
 								</div>
 							</div>
@@ -73,9 +73,20 @@
 							?>
 							<div class="row mb-0">
 								<div class="input-field col s12">
-									<input type="text" id="input-mingguan" value="<?= number_format($user->mingguan);?>" class="text-jumlah" />
-									<input type="hidden" id="mingguan" value="<?= $user->mingguan;?>" />
+									<input type="text" id="input-mingguan" value="<?= number_format((float) ($user->mingguan ?? 0));?>" class="text-jumlah" />
+									<input type="hidden" id="mingguan" value="<?= (float) ($user->mingguan ?? 0);?>" />
 									<label for="input-mingguan">Insentif Mingguan</label>
+								</div>
+							</div>
+							<div class="row mb-0">
+								<div class="input-field col s12">
+									<select id="flag">
+										<option value="" disabled <?= empty($user->flag) ? 'selected' : ''; ?>>Pilih Hari</option>
+										<?php foreach ($weeklyFlags as $value => $label): ?>
+											<option value="<?= html_escape($value); ?>" <?= $user->flag === $value ? 'selected' : ''; ?>><?= html_escape($label); ?> (<?= html_escape($value); ?>)</option>
+										<?php endforeach; ?>
+									</select>
+									<label for="flag" class="active">Hari Input Insentif</label>
 								</div>
 							</div>
 							

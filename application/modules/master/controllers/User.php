@@ -11,6 +11,11 @@ class User extends CI_Controller {
 		$this->load->model('master/muser', 'user');
 		$this->data['title'] = 'Data User';
 		$this->data['number'] = 1;
+		$this->data['weeklyFlags'] = array(
+			'Friday' => 'Jumat',
+			'Saturday' => 'Sabtu',
+			'Sunday' => 'Minggu',
+		);
 		
 		$this->data['selectAkses'] = $this->user->getSelectAkses(is_access());
 		$this->data['listUser'] = $this->user->getListUser(is_access());
@@ -46,6 +51,10 @@ class User extends CI_Controller {
 
 // ========================== insert ==============================
 	public function insert(){
+		if (! $this->validWeeklyFlag($this->input->post('flag', true))) {
+			echo 0;
+			return;
+		}
 		echo $this->user->insert();
 	}
 	
@@ -57,7 +66,15 @@ class User extends CI_Controller {
 	}
 	
 	public function submit_update($id){
+		if (! $this->validWeeklyFlag($this->input->post('flag', true))) {
+			echo 0;
+			return;
+		}
 		echo $this->user->update($id);
+	}
+
+	private function validWeeklyFlag($flag){
+		return in_array($flag, array('Friday', 'Saturday', 'Sunday'), true);
 	}
 	
 	
