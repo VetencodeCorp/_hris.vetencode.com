@@ -42,7 +42,7 @@ $monthNames = array(1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
 						<input type="hidden" name="token" value="<?= html_escape($token); ?>">
 						<label class="manual-field manual-field-wide">
 							<span>Karyawan <b>*</b></span>
-							<select name="user_id" required>
+							<select name="user_id" class="browser-default" required>
 								<option value="" selected disabled>Pilih karyawan</option>
 								<?php foreach ($employees as $employee): ?>
 									<option value="<?= (int) $employee->id; ?>"><?= html_escape($employee->fullname); ?></option>
