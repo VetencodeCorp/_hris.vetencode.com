@@ -16,7 +16,7 @@ $monthNames = array(1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
 				<div>
 					<span class="manual-eyebrow">Area terbatas</span>
 					<h1>Absensi Manual</h1>
-					<p>Absensi dibuat untuk akun <strong><?= html_escape($user->fullname); ?></strong> dan langsung berstatus Hadir.</p>
+					<p>Pilih karyawan tujuan. Absensi langsung berstatus <strong>Hadir dan Disetujui</strong>.</p>
 				</div>
 				<form method="post" action="<?= base_url('absensi-manual/lock'); ?>">
 					<input type="hidden" name="token" value="<?= html_escape($token); ?>">
@@ -40,6 +40,15 @@ $monthNames = array(1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
 
 					<form method="post" action="<?= base_url('absensi-manual/store'); ?>" enctype="multipart/form-data" class="manual-attendance-form">
 						<input type="hidden" name="token" value="<?= html_escape($token); ?>">
+						<label class="manual-field manual-field-wide">
+							<span>Karyawan <b>*</b></span>
+							<select name="user_id" required>
+								<option value="" selected disabled>Pilih karyawan</option>
+								<?php foreach ($employees as $employee): ?>
+									<option value="<?= (int) $employee->id; ?>"><?= html_escape($employee->fullname); ?></option>
+								<?php endforeach; ?>
+							</select>
+						</label>
 						<label class="manual-field manual-field-wide">
 							<span>Tanggal <b>*</b></span>
 							<input type="date" name="tanggal" max="<?= html_escape($maxDate); ?>" required>
@@ -71,7 +80,7 @@ $monthNames = array(1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
 
 				<aside class="manual-recent-card">
 					<div class="manual-card-heading compact">
-						<div><h2>Input manual terbaru</h2><p>Enam catatan terakhir akun ini.</p></div>
+						<div><h2>Input manual terbaru</h2><p>Sepuluh catatan terbaru semua karyawan.</p></div>
 					</div>
 					<?php if (empty($recentRecords)): ?>
 						<div class="manual-recent-empty"><i class="fa fa-inbox" aria-hidden="true"></i><span>Belum ada input manual.</span></div>
@@ -80,8 +89,14 @@ $monthNames = array(1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
 							<?php foreach ($recentRecords as $record): ?>
 								<?php $recordDate = strtotime($record->tanggal); ?>
 								<div class="manual-recent-item">
-									<div><strong><?= date('d', $recordDate); ?> <?= $monthNames[(int) date('n', $recordDate)]; ?> <?= date('Y', $recordDate); ?></strong><span>Hadir · Disetujui</span></div>
+									<div><strong><?= html_escape($record->fullname); ?></strong><span>Hadir · Disetujui</span></div>
+									<div class="manual-recent-date"><?= date('d', $recordDate); ?> <?= $monthNames[(int) date('n', $recordDate)]; ?> <?= date('Y', $recordDate); ?></div>
 									<div class="manual-recent-times"><span>Masuk <b><?= $record->masuk ?: '--:--:--'; ?></b></span><span>Pulang <b><?= $record->pulang ?: '--:--:--'; ?></b></span></div>
+									<form method="post" action="<?= base_url('absensi-manual/delete'); ?>" onsubmit="return confirm('Hapus absensi manual ini? Tindakan ini tidak dapat dibatalkan.');">
+										<input type="hidden" name="token" value="<?= html_escape($token); ?>">
+										<input type="hidden" name="id" value="<?= (int) $record->id; ?>">
+										<button type="submit" class="manual-delete-button"><i class="fa fa-trash" aria-hidden="true"></i>Hapus</button>
+									</form>
 								</div>
 							<?php endforeach; ?>
 						</div>

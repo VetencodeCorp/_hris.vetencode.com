@@ -78,6 +78,17 @@
 									<label for="input-mingguan">Insentif Mingguan</label>
 								</div>
 							</div>
+							<div class="row mb-0">
+								<div class="input-field col s12">
+									<select id="flag">
+										<option value="" disabled selected>Pilih Hari</option>
+										<?php foreach ($weeklyFlags as $value => $label): ?>
+											<option value="<?= html_escape($value); ?>"><?= html_escape($label); ?> (<?= html_escape($value); ?>)</option>
+										<?php endforeach; ?>
+									</select>
+									<label for="flag" class="active">Hari Input Insentif</label>
+								</div>
+							</div>
 							<div class="row mb-0 right">
 								<div class="input-field col s12">
 									<a href="<?= base_url();?>user" class="btn btn-cancel">cancel</a>

@@ -31,7 +31,8 @@ class Absensi_manual extends CI_Controller
 		$this->data['user'] = $user;
 		$this->data['token'] = $this->formToken();
 		$this->data['maxDate'] = date('Y-m-d', strtotime('-1 day'));
-		$this->data['recentRecords'] = $this->manualAttendance->getRecentManualRecords($user->id, 6);
+		$this->data['employees'] = $this->manualAttendance->getEmployees();
+		$this->data['recentRecords'] = $this->manualAttendance->getRecentManualRecords(10);
 		$this->data['unlockedUntil'] = (int) $this->session->userdata('manual_attendance_unlocked_until');
 		$this->load->view('absensi_manual/index', $this->data);
 	}
@@ -87,18 +88,23 @@ class Absensi_manual extends CI_Controller
 
 		$this->validateToken();
 		$user = getUser();
+		$employeeId = (int) $this->input->post('user_id');
+		$employee = $this->manualAttendance->getEmployee($employeeId);
 		$date = trim((string) $this->input->post('tanggal', true));
 		$timeIn = $this->normalizeTime($this->input->post('masuk', true));
 		$timeOut = $this->normalizeTime($this->input->post('pulang', true));
 		$note = trim((string) $this->input->post('note', true));
 
+		if (! $employee) {
+			$this->fail('Karyawan wajib dipilih dan harus berstatus aktif.');
+		}
 		if (! $this->validPastDate($date)) {
 			$this->fail('Tanggal wajib diisi dan harus sebelum hari ini.');
 		}
 		if ($timeIn === false || $timeOut === false) {
 			$this->fail('Format jam tidak valid.');
 		}
-		if ($this->manualAttendance->existsForDate($user->id, $date)) {
+		if ($this->manualAttendance->existsForDate($employee->id, $date)) {
 			$this->fail('Absensi pada tanggal tersebut sudah ada.');
 		}
 
@@ -112,7 +118,7 @@ class Absensi_manual extends CI_Controller
 			$this->fail($photoOut['error']);
 		}
 
-		$auditNote = 'Input manual oleh ' . $user->fullname . ' pada ' . date('d-m-Y H:i:s') . ' WIB.';
+		$auditNote = 'Input manual oleh ' . $user->fullname . ' pada ' . date('d-m-Y H:i:s') . ' WIB untuk ' . $employee->fullname . '.';
 		if ($note !== '') {
 			$auditNote .= ' Catatan: ' . $note;
 		}
@@ -120,7 +126,7 @@ class Absensi_manual extends CI_Controller
 		$data = array(
 			'foto' => isset($photoIn['path']) ? $photoIn['path'] : null,
 			'foto_pulang' => isset($photoOut['path']) ? $photoOut['path'] : null,
-			'user_id' => (int) $user->id,
+			'user_id' => (int) $employee->id,
 			'masuk' => $timeIn ?: null,
 			'pulang' => $timeOut ?: null,
 			'status' => 2,
@@ -136,7 +142,30 @@ class Absensi_manual extends CI_Controller
 		}
 
 		$this->rotateToken();
-		$this->session->set_flashdata('manual_success', 'Absensi ' . date('d-m-Y', strtotime($date)) . ' berhasil disimpan sebagai Hadir dan Disetujui.');
+		$this->session->set_flashdata('manual_success', 'Absensi ' . $employee->fullname . ' pada ' . date('d-m-Y', strtotime($date)) . ' berhasil disimpan sebagai Hadir dan Disetujui.');
+		redirect('absensi-manual');
+	}
+
+	public function delete()
+	{
+		if ($this->input->method() !== 'post' || ! $this->isUnlocked()) {
+			redirect('absensi-manual');
+		}
+
+		$this->validateToken();
+		$record = $this->manualAttendance->getManualRecord((int) $this->input->post('id'));
+		if (! $record) {
+			$this->fail('Absensi manual tidak ditemukan.');
+		}
+
+		if (! $this->manualAttendance->deleteManualRecord($record->id)) {
+			$this->fail('Absensi manual gagal dihapus.');
+		}
+
+		$this->removePhoto($record->foto);
+		$this->removePhoto($record->foto_pulang);
+		$this->rotateToken();
+		$this->session->set_flashdata('manual_success', 'Absensi manual ' . $record->fullname . ' pada ' . date('d-m-Y', strtotime($record->tanggal)) . ' berhasil dihapus.');
 		redirect('absensi-manual');
 	}
 

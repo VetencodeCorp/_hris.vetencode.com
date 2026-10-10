@@ -53,8 +53,8 @@ class Mingguan extends CI_Controller {
 		$dataArray = array(
 			'access_id' => $user->access_id,
 			'hadir' => $kehadiran, 
-			'input_mingguan' => number_format($user->mingguan),
-			'mingguan' => $user->mingguan
+			'input_mingguan' => number_format((float) ($user->mingguan ?? 0)),
+			'mingguan' => (float) ($user->mingguan ?? 0)
 		);
 		echo json_encode($dataArray);
 	}

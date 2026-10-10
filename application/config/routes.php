@@ -11,6 +11,7 @@ $route['riwayat-absensi'] = 'riwayat/riwayat';
 $route['absensi-manual'] = 'absensi_manual/absensi_manual';
 $route['absensi-manual/unlock'] = 'absensi_manual/absensi_manual/unlock';
 $route['absensi-manual/store'] = 'absensi_manual/absensi_manual/store';
+$route['absensi-manual/delete'] = 'absensi_manual/absensi_manual/delete';
 $route['absensi-manual/lock'] = 'absensi_manual/absensi_manual/lock';
 
 // ======================= master data =================================

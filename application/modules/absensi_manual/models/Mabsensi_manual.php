@@ -2,6 +2,32 @@
 
 class Mabsensi_manual extends CI_Model
 {
+	public function getEmployees()
+	{
+		return $this->db
+			->select('id, fullname')
+			->from('user')
+			->where('access_id >', 1)
+			->where('active', 1)
+			->where('deleted_by', null)
+			->order_by('fullname', 'ASC')
+			->get()
+			->result();
+	}
+
+	public function getEmployee($id)
+	{
+		return $this->db
+			->select('id, fullname')
+			->from('user')
+			->where('id', (int) $id)
+			->where('access_id >', 1)
+			->where('active', 1)
+			->where('deleted_by', null)
+			->get()
+			->row();
+	}
+
 	public function existsForDate($userId, $date)
 	{
 		return $this->db
@@ -17,16 +43,36 @@ class Mabsensi_manual extends CI_Model
 		return $this->db->insert('absen_harian', $data);
 	}
 
-	public function getRecentManualRecords($userId, $limit)
+	public function getRecentManualRecords($limit)
 	{
 		return $this->db
-			->select('id, masuk, pulang, tanggal, note')
-			->from('absen_harian')
-			->where('user_id', (int) $userId)
-			->like('note', 'Input manual oleh', 'after')
-			->order_by('tanggal', 'DESC')
+			->select('absen.id, absen.masuk, absen.pulang, absen.tanggal, user.fullname')
+			->from('absen_harian absen')
+			->join('user', 'user.id = absen.user_id', 'LEFT')
+			->like('absen.note', 'Input manual oleh', 'after')
+			->order_by('absen.id', 'DESC')
 			->limit((int) $limit)
 			->get()
 			->result();
+	}
+
+	public function getManualRecord($id)
+	{
+		return $this->db
+			->select('absen.id, absen.foto, absen.foto_pulang, absen.tanggal, user.fullname')
+			->from('absen_harian absen')
+			->join('user', 'user.id = absen.user_id', 'LEFT')
+			->where('absen.id', (int) $id)
+			->like('absen.note', 'Input manual oleh', 'after')
+			->get()
+			->row();
+	}
+
+	public function deleteManualRecord($id)
+	{
+		return $this->db
+			->where('id', (int) $id)
+			->like('note', 'Input manual oleh', 'after')
+			->delete('absen_harian');
 	}
 }
