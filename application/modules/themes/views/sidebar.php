@@ -34,6 +34,7 @@ if ($sidebarAccess === 1) {
 			'label' => 'Kehadiran',
 			'items' => array(
 				array('label' => 'Monitoring Absen', 'url' => 'kehadiran', 'icon' => 'fa-check-square-o', 'match' => array('kehadiran')),
+				array('label' => 'Input Kehadiran', 'url' => 'absensi-manual', 'icon' => 'fa-calendar-plus-o', 'match' => array('absensi-manual')),
 				array('label' => 'Riwayat Absensi', 'url' => 'riwayat-absensi', 'icon' => 'fa-history', 'match' => array('riwayat-absensi')),
 			),
 		),

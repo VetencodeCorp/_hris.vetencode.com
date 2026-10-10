@@ -6,34 +6,18 @@ $(document).on('keyup', '#phone', function(){
   	}
 });
 
-$(document).on('keyup', '#input-gapok', function(){
-	if (/\D/g.test(this.value)){
-    	this.value = this.value.replace(/\D/g, '');
-  	}
-  	
-  	var gapok = $(this).val();
-	if(gapok == ''){
-		$('#gapok').val('');
-		return;
-	}
-  	
-  	$('#input-gapok').val(parseFloat(gapok).toLocaleString());
-	$('#gapok').val(gapok);
+function formatAmountField(input, hidden){
+	var digits = $(input).val().replace(/\D/g, '');
+	$(input).val(digits === '' ? '' : Number(digits).toLocaleString('id-ID'));
+	$(hidden).val(digits === '' ? '0' : digits);
+}
+
+$(document).on('input', '#input-gapok', function(){
+	formatAmountField(this, '#gapok');
 });
 
-$(document).on('keyup', '#input-mingguan', function(){
-	if (/\D/g.test(this.value)){
-    	this.value = this.value.replace(/\D/g, '');
-  	}
-  	
-  	var mingguan = $(this).val();
-	if(mingguan == ''){
-		$('#mingguan').val('');
-		return;
-	}
-  	
-  	$('#input-mingguan').val(parseFloat(mingguan).toLocaleString());
-	$('#mingguan').val(mingguan);
+$(document).on('input', '#input-mingguan', function(){
+	formatAmountField(this, '#mingguan');
 });
 
 $(document).on('click', '#btn-add', function(){
