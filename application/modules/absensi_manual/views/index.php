@@ -35,7 +35,7 @@ $monthNames = array(1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
 				<section class="manual-form-card">
 					<div class="manual-card-heading">
 						<div class="manual-card-icon"><i class="fa fa-calendar-plus-o" aria-hidden="true"></i></div>
-						<div><h2>Tambah absensi lampau</h2><p>Hanya tanggal yang wajib diisi.</p></div>
+						<div><h2>Tambah absensi lampau</h2><p>Pilih satu tanggal atau rentang tanggal.</p></div>
 					</div>
 
 					<form method="post" action="<?= base_url('absensi-manual/store'); ?>" enctype="multipart/form-data" class="manual-attendance-form">
@@ -49,9 +49,13 @@ $monthNames = array(1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
 								<?php endforeach; ?>
 							</select>
 						</label>
-						<label class="manual-field manual-field-wide">
-							<span>Tanggal <b>*</b></span>
-							<input type="date" name="tanggal" max="<?= html_escape($maxDate); ?>" required>
+						<label class="manual-field">
+							<span>Tanggal mulai <b>*</b></span>
+							<input id="manual-start-date" type="date" name="tanggal_mulai" max="<?= html_escape($maxDate); ?>" required>
+						</label>
+						<label class="manual-field">
+							<span>Tanggal selesai <b>*</b></span>
+							<input id="manual-end-date" type="date" name="tanggal_selesai" max="<?= html_escape($maxDate); ?>" required>
 						</label>
 						<label class="manual-field">
 							<span>Jam masuk <small>Opsional</small></span>
@@ -73,7 +77,7 @@ $monthNames = array(1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
 							<span>Catatan <small>Opsional</small></span>
 							<textarea name="note" rows="3" maxlength="500" placeholder="Contoh: lupa melakukan absensi"></textarea>
 						</label>
-						<div class="manual-form-note manual-field-wide"><i class="fa fa-info-circle" aria-hidden="true"></i>Tanggal yang sudah memiliki absensi tidak dapat ditambahkan lagi.</div>
+						<div class="manual-form-note manual-field-wide"><i class="fa fa-info-circle" aria-hidden="true"></i>Tanggal yang sudah memiliki absensi otomatis dilewati. Foto hanya dapat diunggah jika tanggal mulai dan selesai sama. Rentang maksimal 366 hari.</div>
 						<button type="submit" class="manual-submit manual-field-wide"><i class="fa fa-check" aria-hidden="true"></i>Simpan sebagai Hadir</button>
 					</form>
 				</section>
@@ -106,5 +110,14 @@ $monthNames = array(1 => 'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
 		</main>
 
 		<?= $this->load->view('themes/script'); ?>
+		<script>
+			document.getElementById('manual-start-date').addEventListener('change', function () {
+				var endDate = document.getElementById('manual-end-date');
+				endDate.min = this.value;
+				if (! endDate.value || endDate.value < this.value) {
+					endDate.value = this.value;
+				}
+			});
+		</script>
 	</body>
 </html>
