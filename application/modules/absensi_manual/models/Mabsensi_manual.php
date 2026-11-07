@@ -38,9 +38,41 @@ class Mabsensi_manual extends CI_Model
 			->count_all_results() > 0;
 	}
 
+	public function getExistingDates($userId, $startDate, $endDate)
+	{
+		$records = $this->db
+			->select('tanggal')
+			->from('absen_harian')
+			->where('user_id', (int) $userId)
+			->where('tanggal >=', $startDate . ' 00:00:00')
+			->where('tanggal <', date('Y-m-d H:i:s', strtotime($endDate . ' +1 day')))
+			->get()
+			->result();
+
+		$dates = array();
+		foreach ($records as $record) {
+			$dates[date('Y-m-d', strtotime($record->tanggal))] = true;
+		}
+
+		return $dates;
+	}
+
 	public function insert($data)
 	{
 		return $this->db->insert('absen_harian', $data);
+	}
+
+	public function insertBatch($rows)
+	{
+		if (empty($rows)) {
+			return false;
+		}
+
+		$this->db->trans_start();
+		$this->db->insert_batch('absen_harian', $rows);
+		$this->db->trans_complete();
+
+		return $this->db->trans_status();
 	}
 
 	public function getRecentManualRecords($limit)

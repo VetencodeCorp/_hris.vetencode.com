@@ -90,7 +90,8 @@ class Absensi_manual extends CI_Controller
 		$user = getUser();
 		$employeeId = (int) $this->input->post('user_id');
 		$employee = $this->manualAttendance->getEmployee($employeeId);
-		$date = trim((string) $this->input->post('tanggal', true));
+		$startDate = trim((string) $this->input->post('tanggal_mulai', true));
+		$endDate = trim((string) $this->input->post('tanggal_selesai', true));
 		$timeIn = $this->normalizeTime($this->input->post('masuk', true));
 		$timeOut = $this->normalizeTime($this->input->post('pulang', true));
 		$note = trim((string) $this->input->post('note', true));
@@ -98,14 +99,37 @@ class Absensi_manual extends CI_Controller
 		if (! $employee) {
 			$this->fail('Karyawan wajib dipilih dan harus berstatus aktif.');
 		}
-		if (! $this->validPastDate($date)) {
-			$this->fail('Tanggal wajib diisi dan harus sebelum hari ini.');
+		if (! $this->validPastDate($startDate) || ! $this->validPastDate($endDate)) {
+			$this->fail('Tanggal mulai dan selesai wajib diisi serta harus sebelum hari ini.');
+		}
+		if ($endDate < $startDate) {
+			$this->fail('Tanggal selesai tidak boleh sebelum tanggal mulai.');
 		}
 		if ($timeIn === false || $timeOut === false) {
 			$this->fail('Format jam tidak valid.');
 		}
-		if ($this->manualAttendance->existsForDate($employee->id, $date)) {
-			$this->fail('Absensi pada tanggal tersebut sudah ada.');
+
+		$start = new DateTimeImmutable($startDate);
+		$end = new DateTimeImmutable($endDate);
+		$rangeDays = (int) $start->diff($end)->days + 1;
+		if ($rangeDays > 366) {
+			$this->fail('Rentang tanggal maksimal 366 hari.');
+		}
+		if ($rangeDays > 1 && ($this->hasUploadedFile('foto') || $this->hasUploadedFile('foto_pulang'))) {
+			$this->fail('Foto hanya dapat digunakan untuk absensi satu tanggal. Kosongkan foto untuk input rentang tanggal.');
+		}
+
+		$existingDates = $this->manualAttendance->getExistingDates($employee->id, $startDate, $endDate);
+		$dates = array();
+		for ($date = $start; $date <= $end; $date = $date->modify('+1 day')) {
+			$dateString = $date->format('Y-m-d');
+			if (! isset($existingDates[$dateString])) {
+				$dates[] = $dateString;
+			}
+		}
+		$skipped = $rangeDays - count($dates);
+		if (empty($dates)) {
+			$this->fail('Semua tanggal dalam rentang tersebut sudah memiliki absensi.');
 		}
 
 		$photoIn = $this->uploadPhoto('foto', 'manual-in');
@@ -118,31 +142,38 @@ class Absensi_manual extends CI_Controller
 			$this->fail($photoOut['error']);
 		}
 
-		$auditNote = 'Input manual oleh ' . $user->fullname . ' pada ' . date('d-m-Y H:i:s') . ' WIB untuk ' . $employee->fullname . '.';
+		$auditNote = 'Input manual oleh ' . $user->fullname . ' pada ' . date('d-m-Y H:i:s') . ' WIB untuk ' . $employee->fullname . '. Rentang ' . date('d-m-Y', strtotime($startDate)) . ' s.d. ' . date('d-m-Y', strtotime($endDate)) . '.';
 		if ($note !== '') {
 			$auditNote .= ' Catatan: ' . $note;
 		}
 
-		$data = array(
-			'foto' => isset($photoIn['path']) ? $photoIn['path'] : null,
-			'foto_pulang' => isset($photoOut['path']) ? $photoOut['path'] : null,
-			'user_id' => (int) $employee->id,
-			'masuk' => $timeIn ?: null,
-			'pulang' => $timeOut ?: null,
-			'status' => 2,
-			'flag' => 'hadir',
-			'note' => $auditNote,
-			'tanggal' => $date . ' 00:00:00',
-		);
+		$rows = array();
+		foreach ($dates as $date) {
+			$rows[] = array(
+				'foto' => isset($photoIn['path']) ? $photoIn['path'] : null,
+				'foto_pulang' => isset($photoOut['path']) ? $photoOut['path'] : null,
+				'user_id' => (int) $employee->id,
+				'masuk' => $timeIn ?: null,
+				'pulang' => $timeOut ?: null,
+				'status' => 2,
+				'flag' => 'hadir',
+				'note' => $auditNote,
+				'tanggal' => $date . ' 00:00:00',
+			);
+		}
 
-		if (! $this->manualAttendance->insert($data)) {
+		if (! $this->manualAttendance->insertBatch($rows)) {
 			$this->removePhoto(isset($photoIn['path']) ? $photoIn['path'] : null);
 			$this->removePhoto(isset($photoOut['path']) ? $photoOut['path'] : null);
-			$this->fail('Absensi gagal disimpan. Silakan coba lagi.');
+			$this->fail('Absensi rentang tanggal gagal disimpan. Silakan coba lagi.');
 		}
 
 		$this->rotateToken();
-		$this->session->set_flashdata('manual_success', 'Absensi ' . $employee->fullname . ' pada ' . date('d-m-Y', strtotime($date)) . ' berhasil disimpan sebagai Hadir dan Disetujui.');
+		$message = count($rows) . ' absensi ' . $employee->fullname . ' berhasil disimpan sebagai Hadir dan Disetujui.';
+		if ($skipped > 0) {
+			$message .= ' ' . $skipped . ' tanggal dilewati karena sudah memiliki absensi.';
+		}
+		$this->session->set_flashdata('manual_success', $message);
 		redirect('absensi-manual');
 	}
 
@@ -211,6 +242,11 @@ class Absensi_manual extends CI_Controller
 		}
 
 		return false;
+	}
+
+	private function hasUploadedFile($field)
+	{
+		return isset($_FILES[$field]) && (int) $_FILES[$field]['error'] !== UPLOAD_ERR_NO_FILE;
 	}
 
 	private function uploadPhoto($field, $prefix)
